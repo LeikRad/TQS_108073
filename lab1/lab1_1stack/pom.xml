@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>leikrad.dev</groupId>
-    <artifactId>lab1_1</artifactId>
+    <artifactId>lab1_1stack</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

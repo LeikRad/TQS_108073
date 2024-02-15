@@ -23,4 +23,11 @@
 hs_err_pid*
 replay_pid*
 
+# vscode
 .vscode
+
+# maven
+.classpath
+.project
+.settings/
+target/

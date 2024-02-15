@@ -1,38 +1,56 @@
 package stack;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class TqsStack<T> implements Stack<T> {
     private static final String NOT_IMPLEMENTED = "Not implemented yet";
 
-    private LinkedList<T> list = new LinkedList<T>();
+    private LinkedList<T> list = null;
+    private int max_size = -1;
 
     public TqsStack() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED);
+        list = new LinkedList<>();
+    }
+
+    public TqsStack(int bound) {
+        max_size = bound;
+        list = new LinkedList<>();
     }
 
     @Override
     public T pop() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED);
+        if (list.isEmpty()) {
+            throw new NoSuchElementException("Stack is Empty.");
+        }
+
+        return list.pop();
     }
 
     @Override
     public void push(T element) {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED);
+        if (max_size != -1 && list.size() >= max_size) {
+            throw new IllegalStateException("Stack has reached max size.");
+        }
+        list.push(element);
     }
 
     @Override
     public T peek() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED);
+        if (list.isEmpty()) {
+            throw new NoSuchElementException("Stack is Empty.");
+        }
+
+        return list.peek();
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED);
+        return list.size();
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED);
+        return list.isEmpty();
     }
 }

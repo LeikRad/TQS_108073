@@ -31,15 +31,14 @@ public class Dip {
     public Dip(int[] arrayOfNumbers, int[] arrayOfStarts) {
         this();
 
-       /* code to check ranges
-       if( ! Arrays.stream(arrayOfNumbers).allMatch( nr -> nr >= 1 && nr <= NUMBERS_RANGE_MAX) ){
+        /* code to check ranges */
+        if (!Arrays.stream(arrayOfNumbers).allMatch(nr -> nr >= 1 && nr <= NUMBERS_RANGE_MAX)) {
             throw new IllegalArgumentException("numbers set are outside the expected range!");
         }
 
-        if( ! Arrays.stream(arrayOfStarts).allMatch(nr -> nr >= 1 && nr <= STARS_RANGE_MAX) ){
+        if (!Arrays.stream(arrayOfStarts).allMatch(nr -> nr >= 1 && nr <= STARS_RANGE_MAX)) {
             throw new IllegalArgumentException("numbers set are outside the expected range!");
         }
-        */
 
         if (NUMBERS_REQUIRED == arrayOfNumbers.length && STARS_REQUIRED == arrayOfStarts.length) {
             numbers.add(arrayOfNumbers);
@@ -58,18 +57,17 @@ public class Dip {
         return stars;
     }
 
-    public static Dip generateRandomDip()  {
-
+    public static Dip generateRandomDip() {
 
         Dip randomDip = new Dip();
-        for (int i = 0; i < NUMBERS_REQUIRED; ) {
+        for (int i = 0; i < NUMBERS_REQUIRED;) {
             int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
             if (!randomDip.getNumbersColl().contains(candidate)) {
                 randomDip.getNumbersColl().add(candidate);
                 i++;
             }
         }
-        for (int i = 0; i < STARS_REQUIRED; ) {
+        for (int i = 0; i < STARS_REQUIRED;) {
             int candidate = generator.nextInt(STARS_RANGE_MAX) + 1;
             if (!randomDip.getStarsColl().contains(candidate)) {
                 randomDip.getStarsColl().add(candidate);
@@ -104,7 +102,6 @@ public class Dip {
         }
         return Objects.equals(this.stars, other.stars);
     }
-
 
     /**
      * prepares a string representation of the data structure, formated for

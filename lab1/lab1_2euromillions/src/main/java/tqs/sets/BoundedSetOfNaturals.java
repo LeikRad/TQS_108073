@@ -6,7 +6,8 @@ import java.util.Objects;
 
 /**
  * offers a bounded set data structure, thus complying with:
- * - the set is created for a maximum number of elements (bounded to a limit), but can contain less
+ * - the set is created for a maximum number of elements (bounded to a limit),
+ * but can contain less
  * - no duplicate values allowed
  * - order of elements is not relevant
  * - assuming natural numbers (non-negatives)
@@ -58,15 +59,22 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
         return newSet;
     }
 
-
     public int size() {
         return this.collection.size();
     }
 
-
-    //TODO implement the intersect logic
     public boolean intersects(BoundedSetOfNaturals subset) {
-        return false;
+        if (this.size() < subset.size()) {
+            return subset.intersects(this);
+        }
+
+        for (Integer num : subset.collection) {
+            if (!this.collection.contains(num)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean contains(Integer element) {
@@ -77,7 +85,6 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
     public Iterator<Integer> iterator() {
         return collection.iterator();
     }
-
 
     @Override
     public int hashCode() {
@@ -101,6 +108,5 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
         final BoundedSetOfNaturals other = (BoundedSetOfNaturals) obj;
         return Objects.equals(this.collection, other.collection);
     }
-
 
 }

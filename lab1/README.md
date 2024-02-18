@@ -16,3 +16,15 @@ Tests that should be written for the BoundedSetOfNaturals class:
 - Test the intersect method.
 - Test the hashcode method.
 - Test the equals method with various inputs.
+
+### 2d/ Run Jacoco coverage analysis and compare with previous results. In particular, compare the “before” and “after” for the BoundedSetOfNaturals class.
+
+#### Before
+
+![BoundedSetOfNaturals_overview_before](./media/BoundedSetOfNaturals_overview_before.png)
+![BoundedSetOfNaturals_methods_before](./media/BoundedSetOfNaturals_methods_before.png)
+
+#### After
+
+![BoundedSetOfNaturals_overview_after](./media/BoundedSetOfNaturals_overview_after.png)
+![BoundedSetOfNaturals_methods_after](./media/BoundedSetOfNaturals_methods_after.png)

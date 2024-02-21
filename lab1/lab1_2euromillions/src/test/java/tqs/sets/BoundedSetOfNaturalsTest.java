@@ -130,12 +130,10 @@ class BoundedSetOfNaturalsTest {
     @DisplayName("Intersect returns true if a subset intersects with the main set")
     @Test
     void testIntersect() {
-        BoundedSetOfNaturals setD = BoundedSetOfNaturals.fromArray(new int[] { 50, 60, 70 });
-
         assertTrue(setB.intersects(setC));
         assertTrue(setC.intersects(setB));
 
-        assertFalse(setB.intersects(setD));
-        assertFalse(setD.intersects(setB));
+        assertFalse(setB.intersects(setA));
+        assertFalse(setA.intersects(setB));
     }
 }

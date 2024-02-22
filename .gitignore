@@ -26,6 +26,9 @@ replay_pid*
 # vscode
 .vscode
 
+# intellij
+.idea
+
 # maven
 .classpath
 .project

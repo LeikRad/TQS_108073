@@ -34,11 +34,11 @@ public class AddressResolverService {
         this.httpClient = httpClient;
     }
 
-
-    public Optional<Address> findAddressForLocation(double latitude, double longitude) throws URISyntaxException, IOException, ParseException, org.json.simple.parser.ParseException {
+    public Optional<Address> findAddressForLocation(double latitude, double longitude)
+            throws URISyntaxException, IOException, ParseException, org.json.simple.parser.ParseException {
 
         String endpointUri = prepareUriForRemoteEndpoint(latitude, longitude);
-
+        System.out.println(endpointUri);
         String response = httpClient.doHttpGet(endpointUri);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, response);
 
@@ -58,12 +58,13 @@ public class AddressResolverService {
 
     private static String prepareUriForRemoteEndpoint(double latitude, double longitude) throws URISyntaxException {
 
-        //TODO: set the API key in the resources/config.properties file
+        // TODO: set the API key in the resources/config.properties file
         String apiKey = ConfigUtils.getPropertyFromConfig("mapquest_key");
 
         URIBuilder uriBuilder = new URIBuilder("https://www.mapquestapi.com/geocoding/v1/reverse");
         uriBuilder.addParameter("key", apiKey);
-        uriBuilder.addParameter("location", (new Formatter()).format(Locale.US, "%.5f,%.5f", latitude, longitude).toString());
+        uriBuilder.addParameter("location",
+                (new Formatter()).format(Locale.US, "%.5f,%.5f", latitude, longitude).toString());
         uriBuilder.addParameter("outFormat", "json");
         uriBuilder.addParameter("thumbMaps", "false");
         return uriBuilder.build().toString();

@@ -15,6 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 @ExtendWith(MockitoExtension.class)
 class StockPortfolioTest {
     @InjectMocks
@@ -35,6 +38,7 @@ class StockPortfolioTest {
         double result = portfolio.totalValue();
 
         assertEquals(14.0, result);
+        assertThat(result, equalTo(14.0));
 
         verify(stockmarket, atLeast(1)).lookUpPrice(anyString());
     }

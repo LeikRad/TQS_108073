@@ -107,7 +107,7 @@ public class AddressResolverTest {
         """;
 
     when(client.doHttpGet(
-        "https://www.mapquestapi.com/geocoding/v1/reverse?key=YOUR_KEY_GOES_HERE&location=40.63436%2C-8.65616&outFormat=json&thumbMaps=false"))
+        "https://www.mapquestapi.com/geocoding/v1/reverse?key=zrg8ntcCCcUuWflmDVKBemPVJfiVy6kg&location=40.63436%2C-8.65616&outFormat=json&thumbMaps=false"))
         .thenReturn(api_resp);
     // will crash for now...need to set the resolver before using it
     Optional<Address> result = resolver.findAddressForLocation(40.63436, -8.65616);
@@ -153,7 +153,7 @@ public class AddressResolverTest {
           """;
 
     when(client.doHttpGet(
-        "https://www.mapquestapi.com/geocoding/v1/reverse?key=YOUR_KEY_GOES_HERE&location=-361.00000%2C-361.00000&outFormat=json&thumbMaps=false"))
+        "https://www.mapquestapi.com/geocoding/v1/reverse?key=zrg8ntcCCcUuWflmDVKBemPVJfiVy6kg&location=-361.00000%2C-361.00000&outFormat=json&thumbMaps=false"))
         .thenReturn(api_resp);
     Optional<Address> result = resolver.findAddressForLocation(-361, -361);
     // verify no valid result

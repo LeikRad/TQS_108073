@@ -21,7 +21,17 @@ public class TqsBasicHttpClient implements ISimpleHttpClient {
 
     @Override
     public String doHttpGet(String url) throws IOException {
-        return "";
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(url);
+            CloseableHttpResponse response = client.execute(request);
+            try {
+                HttpEntity entity = response.getEntity();
+                return EntityUtils.toString(entity);
+            } finally {
+                if (response != null)
+                    response.close();
+            }
+        }
     }
 
 }

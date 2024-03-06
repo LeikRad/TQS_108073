@@ -1,5 +1,6 @@
 package leikrad.dev.lab3_2cars;
 
+import leikrad.dev.lab3_2cars.boundary.CarRestController;
 import leikrad.dev.lab3_2cars.data.Car;
 import leikrad.dev.lab3_2cars.service.CarManagerService;
 

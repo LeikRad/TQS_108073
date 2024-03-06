@@ -4,13 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import leikrad.dev.lab3_2cars.data.Car;
-import leikrad.dev.lab3_2cars.repository.CarRepository;
+import leikrad.dev.lab3_2cars.data.CarRepository;
 
 @DataJpaTest
 public class CarRepositoryTest {
@@ -28,7 +29,7 @@ public class CarRepositoryTest {
         entityManager.persistAndFlush(car);
 
         // when
-        Car found = carRepository.findByCarID(car.getCarID()).get();
+        Car found = carRepository.findByCarId(car.getCarId()).orElse(null);
 
         // then
         assertThat(found).isEqualTo(car);
@@ -37,10 +38,10 @@ public class CarRepositoryTest {
     @Test
     void whenInvalidId_thenReturnNull() {
         // when
-        Car fromDb = carRepository.findByCarID(-99L).orElse(null);
+        Car fromDb = carRepository.findByCarId(-99L).orElse(null);
 
         // then
-        assertThat(fromDb).isTrue();
+        assertThat(fromDb).isNull();
     }
 
     @Test

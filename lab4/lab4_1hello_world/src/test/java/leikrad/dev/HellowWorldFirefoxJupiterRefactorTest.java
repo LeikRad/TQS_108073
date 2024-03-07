@@ -5,29 +5,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.WebDriver;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.slf4j.Logger;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
-class HelloWorldChromeJupiterTest {
+import io.github.bonigarcia.seljup.SeleniumJupiter;
+
+@ExtendWith(SeleniumJupiter.class)
+class HelloWorldFirefoxJupiterRefactorTest {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
-    private WebDriver driver;
-
-    @BeforeAll
-    static void setupClass() {
-        WebDriverManager.firefoxdriver().setup();
-    }
-
-    @BeforeEach
-    void setup() {
-        driver = new FirefoxDriver();
-    }
-
     @Test
-    void test() {
+    void test_refactor(FirefoxDriver driver) {
         // Exercise
         String sutUrl = "https://bonigarcia.dev/selenium-webdriver-java/";
         driver.get(sutUrl);
@@ -37,10 +27,4 @@ class HelloWorldChromeJupiterTest {
         // Verify
         assertThat(title).isEqualTo("Hands-On Selenium WebDriver with Java");
     }
-
-    @AfterEach
-    void teardown() {
-        driver.quit();
-    }
-
 }

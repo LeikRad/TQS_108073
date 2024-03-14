@@ -13,10 +13,23 @@ public class Calculator {
     }
 
     public void push(String op) {
-        if (op.equals("+")) {
-            stack.push(stack.pop() + stack.pop());
-        } else if (op.equals("-")) {
-            stack.push(-stack.pop() + stack.pop());
+        double b = stack.pop();
+        double a = stack.pop();
+        switch (op) {
+            case "+":
+                stack.push(a + b);
+                break;
+            case "-":
+                stack.push(a - b);
+                break;
+            case "*":
+                stack.push(a * b);
+                break;
+            case "/":
+                stack.push(a / b);
+                break;
+            default:
+                break;
         }
     }
 

@@ -37,3 +37,7 @@ Feature: Basic Arithmetic
     | a | b  | c    |
     | 3 | 4  | 0.75 |
     | 2 | 10 | 0.2  |
+
+  Scenario: Invalid Operation
+    When I enter 1 and /
+    Then an error should be thrown

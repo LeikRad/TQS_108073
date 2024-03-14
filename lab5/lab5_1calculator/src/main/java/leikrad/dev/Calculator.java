@@ -1,5 +1,6 @@
 package leikrad.dev;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class Calculator {
@@ -13,8 +14,15 @@ public class Calculator {
     }
 
     public void push(String op) {
-        double b = stack.pop();
-        double a = stack.pop();
+        double a;
+        double b;
+        try{
+            b = stack.pop();
+            a = stack.pop();
+        } catch (EmptyStackException e) {
+            throw new IllegalArgumentException("Not enough operands");
+        }
+
         switch (op) {
             case "+":
                 stack.push(a + b);

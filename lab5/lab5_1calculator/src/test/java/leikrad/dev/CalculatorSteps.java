@@ -36,11 +36,27 @@ public class CalculatorSteps {
         calc.push("-");
     }
 
-    @Then("the result is {int}")
+
+    @When("I enter {int}, {int} and *")
+    public void multiply(int arg1, int arg2) {
+        log.debug("Multiplying {} and {}", arg1, arg2);
+        calc.push(arg1);
+        calc.push(arg2);
+        calc.push("*");
+    }
+
+    @When("I enter {int}, {int} and \\/")
+    public void divide(int arg1, int arg2) {
+        log.debug("Dividing {} and {}", arg1, arg2);
+        calc.push(arg1);
+        calc.push(arg2);
+        calc.push("/");
+    }
+
+    @Then("the result is {double}")
     public void the_result_is(double expected) {
         Number value = calc.value();
         log.debug("Result: {} (expected {})", value, expected);
         assertEquals(expected, value);
     }
-
 }

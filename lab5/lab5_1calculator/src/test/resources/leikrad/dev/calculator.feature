@@ -1,3 +1,4 @@
+@calc_sample
 Feature: Basic Arithmetic
 
   Background: A Calculator
@@ -5,7 +6,7 @@ Feature: Basic Arithmetic
 
   Scenario: Addition
     When I enter 4, 9 and +
-    Then the result is 9
+    Then the result is 13
 
   Scenario: Substraction
     When I enter 7, 2 and - 

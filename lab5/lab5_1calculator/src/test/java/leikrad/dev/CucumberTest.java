@@ -9,8 +9,8 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectClasspathResource("io/github/bonigarcia")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "io.github.bonigarcia")
+@SelectClasspathResource("leikrad/dev")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "leikrad.dev")
 public class CucumberTest {
 
 }

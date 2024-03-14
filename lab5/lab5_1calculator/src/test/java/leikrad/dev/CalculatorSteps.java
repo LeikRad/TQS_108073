@@ -1,9 +1,10 @@
+package leikrad.dev;
+
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
-import leikrad.dev.Calculator;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,7 +20,7 @@ public class CalculatorSteps {
         calc = new Calculator();
     }
 
-    @When("I enter {int}, {int} and press +")
+    @When("I enter {int}, {int} and +")
     public void add(int arg1, int arg2) {
         log.debug("Adding {} and {}", arg1, arg2);
         calc.push(arg1);
@@ -27,7 +28,7 @@ public class CalculatorSteps {
         calc.push("+");
     }
 
-    @When("I enter {int}, {int} and press -")
+    @When("I enter {int}, {int} and -")
     public void substract(int arg1, int arg2) {
         log.debug("Substracting {} and {}", arg1, arg2);
         calc.push(arg1);

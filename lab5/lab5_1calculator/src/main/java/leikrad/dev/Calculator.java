@@ -9,7 +9,6 @@ public class Calculator {
     }
 
     public void push(int arg) {
-        stack.push(arg);
     }
 
     public void push(String op) {
@@ -17,6 +16,6 @@ public class Calculator {
     }
 
     public Number value() {
-        return stack.peek();
+        return 0;
     }
 }

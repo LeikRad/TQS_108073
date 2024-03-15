@@ -51,7 +51,7 @@ public class BookSteps {
     @When("the customer searches for books published between {iso8601Date} and {iso8601Date}")
     public void searchBooksByYear(LocalDate fromYear, LocalDate toYear) {
         log.info("Searching for books published between {} and {}", fromYear, toYear);
-        foundBooks = bookDatabase.findBooksBetweenYears(fromYear.getYear(), toYear.getYear());
+        foundBooks = bookDatabase.findBooksBetweenYears(fromYear, toYear);
     }
 
     @When("the customer searches for books written by {string}")

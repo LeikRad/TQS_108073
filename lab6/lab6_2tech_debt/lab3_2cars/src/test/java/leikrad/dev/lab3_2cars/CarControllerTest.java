@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 @WebMvcTest(CarController.class)
-public class CarControllerTest {
+class CarControllerTest {
     // Create a test to verify the Car [Rest]Controller (and mock the CarService
     // bean), as “resource efficient” as possible.
 
@@ -41,7 +41,7 @@ public class CarControllerTest {
     private CarManagerService carManagerService;
 
     @Test
-    public void testCreateCar() throws Exception {
+    void testCreateCar() throws Exception {
         Car car = new Car("Toyota", "Corolla");
 
         when(carManagerService.save(Mockito.any())).thenReturn(car);
@@ -55,7 +55,7 @@ public class CarControllerTest {
     }
 
     @Test
-    public void getAllCars() throws Exception {
+    void getAllCars() throws Exception {
         Car car1 = new Car("Toyota", "Corolla");
         Car car2 = new Car("Honda", "Civic");
 
@@ -74,7 +74,7 @@ public class CarControllerTest {
     }
 
     @Test
-    public void getCarById() throws Exception {
+    void getCarById() throws Exception {
         Car car = new Car("Toyota", "Corolla");
 
         when(carManagerService.getCarDetails(1L)).thenReturn(Optional.of(car));

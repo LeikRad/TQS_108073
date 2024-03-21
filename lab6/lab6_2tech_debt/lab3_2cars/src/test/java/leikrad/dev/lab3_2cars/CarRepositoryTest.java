@@ -14,7 +14,7 @@ import leikrad.dev.lab3_2cars.data.Car;
 import leikrad.dev.lab3_2cars.data.CarRepository;
 
 @DataJpaTest
-public class CarRepositoryTest {
+class CarRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;

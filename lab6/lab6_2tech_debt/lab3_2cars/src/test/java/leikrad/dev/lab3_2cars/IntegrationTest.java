@@ -24,7 +24,7 @@ import leikrad.dev.lab3_2cars.data.CarRepository;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "application-integrationtest.properties")
 // @AutoConfigureTestDatabase
-public class IntegrationTest {
+class IntegrationTest {
 
     @LocalServerPort
     int randomServerPort;

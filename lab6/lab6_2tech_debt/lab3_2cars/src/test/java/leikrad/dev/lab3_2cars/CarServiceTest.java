@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class CarServiceTest {
+class CarServiceTest {
 
     @Mock(lenient = true)
     private CarRepository carRepository;
@@ -49,7 +49,7 @@ public class CarServiceTest {
     }
 
     @Test
-    public void testGetAllCars() {
+    void testGetAllCars() {
         Car car = new Car("Toyota", "Corolla");
         Car car2 = new Car("Honda", "Civic");
         Car car3 = new Car("Toyota", "Camry");
@@ -67,7 +67,7 @@ public class CarServiceTest {
     }
 
     @Test
-    public void testGetCarDetails() {
+    void testGetCarDetails() {
         Car car = new Car("Toyota", "Corolla");
         car.setCarId(1L);
 
@@ -78,7 +78,7 @@ public class CarServiceTest {
     }
 
     @Test
-    public void testGetCarDetails_withWrongID() {
+    void testGetCarDetails_withWrongID() {
         Car car = new Car("Toyota", "Corolla");
         car.setCarId(1L);
 

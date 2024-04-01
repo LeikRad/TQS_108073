@@ -23,7 +23,7 @@ import leikrad.dev.homework1.data.reservation.*;
 import leikrad.dev.homework1.data.trip.Trip;
 
 @ExtendWith(MockitoExtension.class)
-public class ReservationService_UnitTest {
+class ReservationService_UnitTest {
     
     @Mock(lenient = true)
     private ReservationRepository reservationRepository;

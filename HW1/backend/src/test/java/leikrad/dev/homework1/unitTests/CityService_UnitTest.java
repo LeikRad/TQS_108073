@@ -22,7 +22,7 @@ import leikrad.dev.homework1.data.city.*;
 import leikrad.dev.homework1.service.CityManagerService;
 
 @ExtendWith(MockitoExtension.class)
-public class CityService_UnitTest {
+class CityService_UnitTest {
     
     @Mock(lenient = true)
     private CityRepository cityRepository;

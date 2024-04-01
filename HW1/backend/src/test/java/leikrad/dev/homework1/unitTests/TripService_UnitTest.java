@@ -20,7 +20,7 @@ import leikrad.dev.homework1.data.trip.*;
 import leikrad.dev.homework1.service.TripManagerService;
 
 @ExtendWith(MockitoExtension.class)
-public class TripService_UnitTest {
+class TripService_UnitTest {
 
     @Mock(lenient = true)
     private TripRepository tripRepository;

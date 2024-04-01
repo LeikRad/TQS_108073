@@ -15,7 +15,7 @@ import leikrad.dev.homework1.data.city.City;
 import leikrad.dev.homework1.data.trip.*;
 
 @DataJpaTest
-public class TripRepositoryTest {
+class TripRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;

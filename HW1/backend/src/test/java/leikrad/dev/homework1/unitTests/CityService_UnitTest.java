@@ -48,6 +48,9 @@ class CityService_UnitTest {
         Mockito.when(cityRepository.findByCityId(city2.getCityId())).thenReturn(Optional.of(city2));
         Mockito.when(cityRepository.findByCityId(city3.getCityId())).thenReturn(Optional.of(city3));
         Mockito.when(cityRepository.findByCityId(-1L)).thenReturn(Optional.empty());
+        Mockito.when(cityRepository.save(city1)).thenReturn(city1);
+        Mockito.when(cityRepository.save(city2)).thenReturn(city2);
+        Mockito.when(cityRepository.save(city3)).thenReturn(city3);
     }
 
     @Test
@@ -113,6 +116,36 @@ class CityService_UnitTest {
 
         verifyDeleteCityByIdWasntCalled();
     }
+
+    @Test
+    @DisplayName("Test create city")
+    void testCreateCity() {
+        City city = new City("Lisbon");
+        city.setCityId(1L);
+
+        City createdCity = cityManagerService.createCity(city);
+
+        assertThat(createdCity).isNotNull();
+        assertThat(createdCity.getCityId()).isEqualTo(city.getCityId());
+        verifyCreateCityIsCalledOnce();
+    }
+
+    @Test
+    @DisplayName("Test update city")
+    void testUpdateCity() {
+        City city = new City("Lisbon");
+        city.setCityId(1L);
+
+        City createdCity = cityManagerService.createCity(city);
+
+        city.setCityName("Porto");
+
+        City updatedCity = cityManagerService.updateCity(city);
+
+        assertThat(updatedCity).isNotNull();
+        assertThat(updatedCity.getCityId()).isEqualTo(city.getCityId());
+        verifyCreateCityIsCalledTwice();
+    }
     
     private void verifyFindAllCitiesIsCalledOnce() {
         Mockito.verify(cityRepository, VerificationModeFactory.times(1)).findAll();
@@ -128,5 +161,15 @@ class CityService_UnitTest {
 
     private void verifyDeleteCityByIdWasntCalled() {
         Mockito.verify(cityRepository, VerificationModeFactory.times(0)).deleteByCityId(Mockito.anyLong());
+    }
+
+    @SuppressWarnings("null")
+    private void verifyCreateCityIsCalledOnce() {
+        Mockito.verify(cityRepository, VerificationModeFactory.times(1)).save(Mockito.any(City.class));
+    }
+
+    @SuppressWarnings("null")
+    private void verifyCreateCityIsCalledTwice() {
+        Mockito.verify(cityRepository, VerificationModeFactory.times(2)).save(Mockito.any(City.class));
     }
 }

@@ -57,6 +57,9 @@ class ReservationService_UnitTest {
         Mockito.when(reservationRepository.findByReservationId(reservation1.getReservationId())).thenReturn(Optional.of(reservation1));
         Mockito.when(reservationRepository.findByReservationId(reservation2.getReservationId())).thenReturn(Optional.of(reservation2));
         Mockito.when(reservationRepository.findByReservationId(reservation3.getReservationId())).thenReturn(Optional.of(reservation3));
+        Mockito.when(reservationRepository.save(reservation1)).thenReturn(reservation1);
+        Mockito.when(reservationRepository.save(reservation2)).thenReturn(reservation2);
+        Mockito.when(reservationRepository.save(reservation3)).thenReturn(reservation3);
     }
 
     @Test
@@ -179,6 +182,63 @@ class ReservationService_UnitTest {
 
         verifyDeleteReservationByIdWasntCalled();
     }
+
+    @Test
+    @DisplayName("Test create reservation")
+    void testCreateReservation() {
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+
+        city1.setCityId(1L);
+        city2.setCityId(2L);
+
+        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+
+        trip1.setTripId(1L);
+
+        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+
+        reservation1.setReservationId(1L);
+
+        Reservation reservation = reservationManagerService.createReservation(reservation1);
+
+        assertThat(reservation).isNotNull();
+        assertThat(reservation.getPersonName()).isEqualTo(reservation1.getPersonName());
+        assertThat(reservation.getPhoneNumber()).isEqualTo(reservation1.getPhoneNumber());
+        assertThat(reservation.getReservationId()).isEqualTo(reservation1.getReservationId());
+        verifyCreateCityIsCalledOnce();
+    }
+
+    @Test
+    @DisplayName("Test update reservation")
+    void testUpdateReservation() {
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+
+        city1.setCityId(1L);
+        city2.setCityId(2L);
+
+        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+
+        trip1.setTripId(1L);
+
+        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+
+        reservation1.setReservationId(1L);
+
+        Reservation reservation = reservationManagerService.createReservation(reservation1);
+
+        reservation.setPersonName("Jane Doe");
+
+        Reservation updatedReservation = reservationManagerService.updateReservation(reservation);
+
+        assertThat(updatedReservation).isNotNull();
+        assertThat(updatedReservation.getPersonName()).isEqualTo(reservation.getPersonName());
+        assertThat(updatedReservation.getPhoneNumber()).isEqualTo(reservation.getPhoneNumber());
+        assertThat(updatedReservation.getReservationId()).isEqualTo(reservation.getReservationId());
+        verifyCreateCityIsCalledTwice();
+    }
+
     
     private void verifyFindAllReservationsIsCalledOnce() {
         Mockito.verify(reservationRepository, Mockito.times(1)).findAll();
@@ -194,5 +254,13 @@ class ReservationService_UnitTest {
 
     private void verifyDeleteReservationByIdWasntCalled() {
         Mockito.verify(reservationRepository, Mockito.times(0)).deleteByReservationId(Mockito.anyLong());
+    }
+
+    private void verifyCreateCityIsCalledOnce() {
+        Mockito.verify(reservationRepository, Mockito.times(1)).save(Mockito.any(Reservation.class));
+    }
+
+    private void verifyCreateCityIsCalledTwice() {
+        Mockito.verify(reservationRepository, Mockito.times(2)).save(Mockito.any(Reservation.class));
     }
 }

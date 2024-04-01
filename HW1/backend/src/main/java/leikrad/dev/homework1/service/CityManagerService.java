@@ -1,5 +1,5 @@
 package leikrad.dev.homework1.service;
 
-public class ReservationManagerService {
+public class CityManagerService {
     
 }

@@ -8,10 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import leikrad.dev.homework1.data.city.City;
 import leikrad.dev.homework1.data.reservation.*;
+import leikrad.dev.homework1.data.trip.Trip;
 
 @DataJpaTest
 public class ReservationRepositoryTest {
@@ -26,7 +29,19 @@ public class ReservationRepositoryTest {
     @DisplayName("Valid ID should return reservation")
     void whenFindById_thenReturnCity() {
         // given
-        Reservation reservation = new Reservation("Lisbon", "John Doe", "123456789", UUID.randomUUID().toString());
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        entityManager.persist(trip);
+        entityManager.flush();
+        
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 
         // when
@@ -49,10 +64,22 @@ public class ReservationRepositoryTest {
     @Test
     @DisplayName("Find all should return all cities")
     void whenFindAll_thenReturnAllCities() {
-        Reservation reservation1 = new Reservation("Lisbon", "John Doe", "123456789", UUID.randomUUID().toString());
-        Reservation reservation2 = new Reservation("Porto", "Jane Doe", "987654321", UUID.randomUUID().toString());
-        Reservation reservation3 = new Reservation("Faro", "John Smith", "123456789", UUID.randomUUID().toString());
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
 
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        entityManager.persist(trip);
+        entityManager.flush();
+
+        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321", UUID.randomUUID().toString());
+        Reservation reservation3 = new Reservation(trip, "John Smith", "123456789", UUID.randomUUID().toString());
+        
         entityManager.persist(reservation1);
         entityManager.persist(reservation2);
         entityManager.persist(reservation3);
@@ -63,10 +90,36 @@ public class ReservationRepositoryTest {
 
         // then
         
-        assertThat(allReservations).hasSize(3).extracting(Reservation::getCity).containsOnly(reservation1.getCity(), reservation2.getCity(), reservation3.getCity());
-        assertThat(allReservations).hasSize(3).extracting(Reservation::getCustomerName).containsOnly(reservation1.getCustomerName(), reservation2.getCustomerName(), reservation3.getCustomerName());
-        assertThat(allReservations).hasSize(3).extracting(Reservation::getCustomerPhone).containsOnly(reservation1.getCustomerPhone(), reservation2.getCustomerPhone(), reservation3.getCustomerPhone());
+        assertThat(allReservations).hasSize(3).extracting(Reservation::getTrip).containsOnly(trip);
+        assertThat(allReservations).hasSize(3).extracting(Reservation::getPersonName).containsOnly(reservation1.getPersonName(), reservation2.getPersonName(), reservation3.getPersonName());
+        assertThat(allReservations).hasSize(3).extracting(Reservation::getPhoneNumber).containsOnly(reservation1.getPhoneNumber(), reservation2.getPhoneNumber(), reservation3.getPhoneNumber());
         assertThat(allReservations).hasSize(3).extracting(Reservation::getReservationId).containsOnly(reservation1.getReservationId(), reservation2.getReservationId(), reservation3.getReservationId());
         assertThat(allReservations).hasSize(3).extracting(Reservation::getReservationId).doesNotHaveDuplicates();
+    }
+
+    @Test
+    @DisplayName("Delete by ID should remove reservation")
+    void whenDeleteById_thenRemoveReservation() {
+        // given
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        entityManager.persist(trip);
+        entityManager.flush();
+        
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
+        entityManager.persistAndFlush(reservation);
+
+        // when
+        reservationRepository.deleteByReservationId(reservation.getReservationId());
+
+        // then
+        assertThat(reservationRepository.findByReservationId(reservation.getReservationId())).isEmpty();
     }
 }

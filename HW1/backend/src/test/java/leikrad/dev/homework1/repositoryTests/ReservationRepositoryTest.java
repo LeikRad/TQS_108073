@@ -17,7 +17,7 @@ import leikrad.dev.homework1.data.reservation.*;
 import leikrad.dev.homework1.data.trip.Trip;
 
 @DataJpaTest
-public class ReservationRepositoryTest {
+class ReservationRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;

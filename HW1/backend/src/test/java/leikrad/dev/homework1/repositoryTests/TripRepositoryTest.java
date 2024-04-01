@@ -4,6 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -210,6 +213,57 @@ class TripRepositoryTest {
         // then
         List<Trip> allTrips = tripRepository.findAll();
         assertThat(allTrips).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Create Trip")
+    void whenCreateTrip_thenShouldCreateTrip() {
+        // given
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+
+        // when
+        Trip savedTrip = tripRepository.save(trip);
+
+        // then
+        Trip found = tripRepository.findByTripId(savedTrip.getTripId()).orElse(null);
+
+        assertThat(found).isNotNull();
+        assertThat(found.getOriginCity()).isEqualTo(city1);
+    }
+
+    @Test
+    @DisplayName("Update Trip")
+    void whenUpdateTrip_thenShouldUpdateTrip() {
+        // given
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+    
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+    
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        trip = tripRepository.save(trip);
+    
+        // when
+        trip.setPrice(200.0);
+        tripRepository.save(trip);
+    
+        // then
+        Trip found = tripRepository.findByTripId(trip.getTripId()).orElse(null);
+        assertThat(found).isNotNull();
+        assertThat(found.getPrice()).isEqualTo(200.0);
     }
 }
 

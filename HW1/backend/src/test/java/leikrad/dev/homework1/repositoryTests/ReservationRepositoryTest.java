@@ -4,6 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -121,5 +124,39 @@ class ReservationRepositoryTest {
 
         // then
         assertThat(reservationRepository.findByReservationId(reservation.getReservationId())).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Create Reservation")
+    public void testCreateReservation() {
+        // given
+        Reservation reservation = new Reservation();
+        reservation.setPersonName("Another name");
+        // when
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        // then
+        Reservation found = reservationRepository.findByReservationId(savedReservation.getReservationId()).orElse(null);
+
+        assertThat(found).isNotNull();
+        assertThat(found.getPersonName()).isEqualTo(reservation.getPersonName());
+    }
+
+    @Test
+    @DisplayName("Update Reservation")
+    public void testUpdateReservation() {
+        // given
+        Reservation reservation = new Reservation();
+        reservation.setPersonName("Test Reservation");
+        reservation = reservationRepository.save(reservation);
+
+        // when
+        reservation.setPersonName("Another Name");
+        reservationRepository.save(reservation);
+
+        // then
+        Reservation updatedReservation = reservationRepository.findByReservationId(reservation.getReservationId()).orElse(null);
+        assertThat(updatedReservation).isNotNull();
+        assertThat(updatedReservation.getPersonName()).isEqualTo(reservation.getPersonName());
     }
 }

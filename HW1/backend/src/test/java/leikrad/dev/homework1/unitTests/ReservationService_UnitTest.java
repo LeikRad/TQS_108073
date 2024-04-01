@@ -8,9 +8,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,7 +28,7 @@ public class ReservationService_UnitTest {
     @Mock(lenient = true)
     private ReservationRepository reservationRepository;
 
-    @Mock(lenient = true)
+    @InjectMocks
     private ReservationManagerService reservationManagerService;
 
     @BeforeEach
@@ -92,11 +94,12 @@ public class ReservationService_UnitTest {
 
         city1.setCityId(1L);
         city2.setCityId(2L);
+        
 
         Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
 
         trip1.setTripId(1L);
-
+        
         Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
 
         reservation1.setReservationId(1L);
@@ -104,7 +107,10 @@ public class ReservationService_UnitTest {
         Reservation reservation = reservationManagerService.getReservationDetails(reservation1.getReservationId()).orElse(null);
 
         verifyFindReservationByIdIsCalledOnce();
-        assertThat(reservation).isEqualTo(reservation1);
+        assertThat(reservation).isNotNull();
+        assertThat(reservation.getPersonName()).isEqualTo(reservation1.getPersonName());
+        assertThat(reservation.getPhoneNumber()).isEqualTo(reservation1.getPhoneNumber());
+        assertThat(reservation.getReservationId()).isEqualTo(reservation1.getReservationId());
     }
 
     @Test

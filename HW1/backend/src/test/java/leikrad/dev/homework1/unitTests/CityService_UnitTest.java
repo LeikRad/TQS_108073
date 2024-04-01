@@ -76,7 +76,8 @@ public class CityService_UnitTest {
         City city = cityManagerService.getCityDetails(city1.getCityId()).orElse(null);
 
         verifyFindCityByIdIsCalledOnce();
-        assertThat(city).isEqualTo(city1);
+        assertThat(city.getCityId()).isEqualTo(city1.getCityId());
+        assertThat(city.getCityName()).isEqualTo(city1.getCityName());
     }
 
     @Test

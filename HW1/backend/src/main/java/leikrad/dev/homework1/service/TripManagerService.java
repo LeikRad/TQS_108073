@@ -18,28 +18,26 @@ public class TripManagerService {
     }
 
     public Optional<Trip> getTripDetails(Long tripId) {
-        if (tripId != null) {
-            return tripRepository.findById(tripId);
-        }
-        return Optional.empty();
+        return tripRepository.findByTripId(tripId);
     }
 
     public void deleteTrip(Long tripId) {
-        if (tripId != null) {
-            tripRepository.deleteById(tripId);
+        Optional<Trip> trip = tripRepository.findByTripId(tripId);
+        if (trip.isPresent()) {
+            tripRepository.deleteByTripId(tripId);
         }
     }
 
     public List<Trip> getTripsByOriginCity(String cityName) {
-        return tripRepository.findByOriginCityName(cityName);
+        return tripRepository.findByOriginCityCityName(cityName);
     }
 
     public List<Trip> getTripsByDestinationCity(String cityName) {
-        return tripRepository.findByDestinationCityName(cityName);
+        return tripRepository.findByDestinationCityCityName(cityName);
     }
 
     public List<Trip> getTripsByOriginAndDestinationCity(String originCityName, String destinationCityName) {
-        return tripRepository.findByOriginCityNameAndDestinationCityName(originCityName, destinationCityName);
+        return tripRepository.findByOriginCityCityNameAndDestinationCityCityName(originCityName, destinationCityName);
     }
 
 

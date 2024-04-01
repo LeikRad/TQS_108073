@@ -18,15 +18,13 @@ public class CityManagerService {
     }
 
     public Optional<City> getCityDetails(Long cityId) {
-        if (cityId != null) {
-            return cityRepository.findById(cityId);
-        }
-        return Optional.empty();
+        return cityRepository.findByCityId(cityId);
     }
 
     public void deleteCity(Long cityId) {
-        if (cityId != null) {
-            cityRepository.deleteById(cityId);
+        Optional<City> city = cityRepository.findByCityId(cityId);
+        if (city.isPresent()) {
+            cityRepository.deleteByCityId(cityId);
         }
     }
 

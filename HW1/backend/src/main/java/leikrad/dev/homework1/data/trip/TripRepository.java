@@ -17,12 +17,17 @@ public interface TripRepository extends JpaRepository<Trip, Long>{
 
     public void deleteByTripId(Long tripID);
 
+    /* These functions have weird names but they're right
+     * The function findByOriginCityCityName is supposed to return all trips that have the origin city with the name cityName
+     * so originCity has a CityName, that leads to CityCity in the function name
+     * DO NOT CHANGE THIS FUNCTION NAME
+     */
     @NonNull
-    public List<Trip> findByOriginCityName(String cityName);
+    public List<Trip> findByOriginCityCityName(String cityName);
 
     @NonNull
-    public List<Trip> findByDestinationCityName(String cityName);
+    public List<Trip> findByDestinationCityCityName(String cityName);
 
     @NonNull
-    public List<Trip> findByOriginCityNameAndDestinationCityName(String originCityName, String destinationCityName);
+    public List<Trip> findByOriginCityCityNameAndDestinationCityCityName(String originCityName, String destinationCityName);
 }

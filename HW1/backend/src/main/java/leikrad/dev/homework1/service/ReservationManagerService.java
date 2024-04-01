@@ -18,16 +18,14 @@ public class ReservationManagerService {
     }
 
     public Optional<Reservation> getReservationDetails(Long reservationId) {
-        if (reservationId != null) {
-            return reservationRepository.findById(reservationId);
-        }
-        return Optional.empty();
+        return reservationRepository.findByReservationId(reservationId);
     }
 
     public void deleteReservation(Long reservationId) {
-        if (reservationId != null) {
-            reservationRepository.deleteById(reservationId);
-        };
+        Optional<Reservation> reservation = reservationRepository.findByReservationId(reservationId);
+        if (reservation.isPresent()) {
+            reservationRepository.deleteByReservationId(reservationId);
+        }
     }
 
 }

@@ -115,7 +115,7 @@ public class TripRepositoryTest {
         entityManager.flush();
 
         // when
-        List<Trip> allTrips = tripRepository.findByOriginCityCityName("Lisbon");
+        List<Trip> allTrips = tripRepository.findByOriginCityName("Lisbon");
         // then
         
         assertThat(allTrips).hasSize(2).extracting(Trip::getOriginCity).containsOnly(trip1.getOriginCity(), trip2.getOriginCity());
@@ -147,7 +147,7 @@ public class TripRepositoryTest {
         entityManager.flush();
 
         // when
-        List<Trip> allTrips = tripRepository.findByDestinationCityCityName("Lisbon");
+        List<Trip> allTrips = tripRepository.findByDestinationCityName("Lisbon");
 
         // then
         
@@ -180,7 +180,7 @@ public class TripRepositoryTest {
         entityManager.flush();
 
         // when
-        List<Trip> allTrips = tripRepository.findByOriginCityCityNameAndDestinationCityCityName("Lisbon", "Porto");
+        List<Trip> allTrips = tripRepository.findByOriginCityNameAndDestinationCityName("Lisbon", "Porto");
 
         // then
         

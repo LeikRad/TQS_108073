@@ -52,13 +52,13 @@ public class TripService_UnitTest {
         Mockito.when(tripRepository.findByTripId(trip3.getTripId())).thenReturn(Optional.of(trip3));
         Mockito.when(tripRepository.findByTripId(-1L)).thenReturn(Optional.empty());
 
-        Mockito.when(tripRepository.findByOriginCityCityName(city1.getCityName())).thenReturn(List.of(trip1, trip2));
-        Mockito.when(tripRepository.findByDestinationCityCityName(city2.getCityName())).thenReturn(List.of(trip1, trip2));
-        Mockito.when(tripRepository.findByOriginCityCityNameAndDestinationCityCityName(city1.getCityName(), city2.getCityName())).thenReturn(List.of(trip1, trip2));
+        Mockito.when(tripRepository.findByOriginCityName(city1.getCityName())).thenReturn(List.of(trip1, trip2));
+        Mockito.when(tripRepository.findByDestinationCityName(city2.getCityName())).thenReturn(List.of(trip1, trip2));
+        Mockito.when(tripRepository.findByOriginCityNameAndDestinationCityName(city1.getCityName(), city2.getCityName())).thenReturn(List.of(trip1, trip2));
     
-        Mockito.when(tripRepository.findByOriginCityCityName(city2.getCityName())).thenReturn(List.of(trip3));
-        Mockito.when(tripRepository.findByDestinationCityCityName(city1.getCityName())).thenReturn(List.of(trip3));
-        Mockito.when(tripRepository.findByOriginCityCityNameAndDestinationCityCityName(city2.getCityName(), city1.getCityName())).thenReturn(List.of(trip3));
+        Mockito.when(tripRepository.findByOriginCityName(city2.getCityName())).thenReturn(List.of(trip3));
+        Mockito.when(tripRepository.findByDestinationCityName(city1.getCityName())).thenReturn(List.of(trip3));
+        Mockito.when(tripRepository.findByOriginCityNameAndDestinationCityName(city2.getCityName(), city1.getCityName())).thenReturn(List.of(trip3));
     }
 
     @Test
@@ -234,14 +234,14 @@ public class TripService_UnitTest {
     }
 
     private void verifyFindTripsByOriginCityIsCalledOnce() {
-        Mockito.verify(tripRepository, Mockito.times(1)).findByOriginCityCityName(Mockito.anyString());
+        Mockito.verify(tripRepository, Mockito.times(1)).findByOriginCityName(Mockito.anyString());
     }
 
     private void verifyFindTripsByDestinationCityIsCalledOnce() {
-        Mockito.verify(tripRepository, Mockito.times(1)).findByDestinationCityCityName(Mockito.anyString());
+        Mockito.verify(tripRepository, Mockito.times(1)).findByDestinationCityName(Mockito.anyString());
     }
 
     private void verifyFindTripsByOriginAndDestinationCityIsCalledOnce() {
-        Mockito.verify(tripRepository, Mockito.times(1)).findByOriginCityCityNameAndDestinationCityCityName(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(tripRepository, Mockito.times(1)).findByOriginCityNameAndDestinationCityName(Mockito.anyString(), Mockito.anyString());
     }
 }

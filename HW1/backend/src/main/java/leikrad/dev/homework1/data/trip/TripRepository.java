@@ -18,11 +18,11 @@ public interface TripRepository extends JpaRepository<Trip, Long>{
     public void deleteByTripId(Long tripID);
 
     @NonNull
-    public List<Trip> findByOriginCityCityName(String cityName);
+    public List<Trip> findByOriginCityName(String cityName);
 
     @NonNull
-    public List<Trip> findByDestinationCityCityName(String cityName);
+    public List<Trip> findByDestinationCityName(String cityName);
 
     @NonNull
-    public List<Trip> findByOriginCityCityNameAndDestinationCityCityName(String originCityName, String destinationCityName);
+    public List<Trip> findByOriginCityNameAndDestinationCityName(String originCityName, String destinationCityName);
 }

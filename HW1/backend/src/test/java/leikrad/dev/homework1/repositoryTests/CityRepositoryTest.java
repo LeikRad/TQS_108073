@@ -76,6 +76,6 @@ class CityRepositoryTest {
         cityRepository.deleteByCityId(city.getCityId());
 
         // then
-        assertThat(cityRepository.findByCityId(city.getCityId()).isEmpty()).isTrue();
+        assertThat(cityRepository.findByCityId(city.getCityId())).isEmpty();
     }
 }

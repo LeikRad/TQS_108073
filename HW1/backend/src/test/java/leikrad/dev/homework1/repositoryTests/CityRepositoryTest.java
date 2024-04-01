@@ -14,7 +14,7 @@ import java.util.List;
 import leikrad.dev.homework1.data.city.*;
 
 @DataJpaTest
-public class CityRepositoryTest {
+class CityRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -76,7 +76,6 @@ public class CityRepositoryTest {
         cityRepository.deleteByCityId(city.getCityId());
 
         // then
-        assertThat(cityRepository.findByCityId(city.getCityId()).isEmpty());
+        assertThat(cityRepository.findByCityId(city.getCityId()).isEmpty()).isTrue();
     }
-
 }

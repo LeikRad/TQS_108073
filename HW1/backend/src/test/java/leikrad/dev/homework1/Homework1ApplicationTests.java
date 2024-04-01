@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
-@SpringBootTest
+
 class Homework1ApplicationTests {
 
 	@Test

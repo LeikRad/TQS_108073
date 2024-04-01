@@ -173,7 +173,7 @@ public class TripRepositoryTest {
         Trip trip1 = new Trip(city1, city2, originDate, destinationDate, 100.0);
         Trip trip2 = new Trip(city2, city1, originDate, destinationDate, 100.0);
         Trip trip3 = new Trip(city3, city1, originDate, destinationDate, 100.0);
-        
+
         entityManager.persist(trip1);
         entityManager.persist(trip2);
         entityManager.persist(trip3);
@@ -186,6 +186,30 @@ public class TripRepositoryTest {
         
         assertThat(allTrips).hasSize(1).extracting(Trip::getOriginCity).containsOnly(trip1.getOriginCity());
         assertThat(allTrips).hasSize(1).extracting(Trip::getDestinationCity).containsOnly(trip1.getDestinationCity());
+    }
+
+    @Test
+    @DisplayName("Delete by ID should remove trip")
+    void whenDeleteById_thenRemoveCity() {
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        entityManager.persistAndFlush(trip);
+
+        // when
+        tripRepository.deleteByTripId(trip.getTripId());
+
+        // then
+        List<Trip> allTrips = tripRepository.findAll();
+        assertThat(allTrips).isEmpty();
     }
 }
 

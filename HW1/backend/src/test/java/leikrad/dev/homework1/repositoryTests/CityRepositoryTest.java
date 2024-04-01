@@ -61,7 +61,21 @@ public class CityRepositoryTest {
         List<City> allCities = cityRepository.findAll();
 
         // then
-        assertThat(allCities).hasSize(3).extracting(City::getName).containsOnly(city1.getName(), city2.getName(), city3.getName());
+        assertThat(allCities).hasSize(3).extracting(City::getCityName).containsOnly(city1.getCityName(), city2.getCityName(), city3.getCityName());
+    }
+
+    @Test
+    @DisplayName("Delete city by ID")
+    void whenDeleteById_thenShouldDeleteCity() {
+        // given
+        City city = new City("Lisbon");
+        entityManager.persistAndFlush(city);
+
+        // when
+        cityRepository.deleteByCityId(city.getCityId());
+
+        // then
+        assertThat(cityRepository.findByCityId(city.getCityId()).orElse(null)).isNull();
     }
 
 }

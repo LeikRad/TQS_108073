@@ -8,8 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import leikrad.dev.homework1.data.city.City;
 import leikrad.dev.homework1.data.trip.*;
 
 @DataJpaTest
@@ -25,7 +27,16 @@ public class TripRepositoryTest {
     @DisplayName("Valid ID should return trip")
     void whenFindById_thenReturnCity() {
         // given
-        Trip trip = new Trip("Lisbon", "Porto", "2021-01-01", "2021-01-02", 100);
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+
         entityManager.persistAndFlush(trip);
 
         // when
@@ -48,9 +59,21 @@ public class TripRepositoryTest {
     @Test
     @DisplayName("Find all should return all trips")
     void whenFindAll_thenReturnAllCities() {
-        Trip trip1 = new Trip("Lisbon", "Porto", "2021-01-01", "2021-01-02", 100);
-        Trip trip2 = new Trip("Porto", "Faro", "2021-01-01", "2021-01-02", 100);
-        Trip trip3 = new Trip("Faro", "Lisbon", "2021-01-01", "2021-01-02", 100);
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        City city3 = new City("Faro");
+
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.persist(city3);
+        entityManager.flush();
+
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip1 = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        Trip trip2 = new Trip(city2, city3, originDate, destinationDate, 100.0);
+        Trip trip3 = new Trip(city3, city1, originDate, destinationDate, 100.0);
 
         entityManager.persist(trip1);
         entityManager.persist(trip2);
@@ -62,16 +85,29 @@ public class TripRepositoryTest {
 
         // then
         
-        assertThat(allTrips).hasSize(3).extracting(Trip::getStartCity).containsOnly(trip1.getStartCity(), trip2.getStartCity(), trip3.getStartCity());
-        assertThat(allTrips).hasSize(3).extracting(Trip::getEndCity).containsOnly(trip1.getEndCity(), trip2.getEndCity(), trip3.getEndCity());
+        assertThat(allTrips).hasSize(3).extracting(Trip::getOriginCity).containsOnly(trip1.getOriginCity(), trip2.getOriginCity(), trip3.getOriginCity());
+        assertThat(allTrips).hasSize(3).extracting(Trip::getDestinationCity).containsOnly(trip1.getDestinationCity(), trip2.getDestinationCity(), trip3.getDestinationCity());
     }
 
     @Test
     @DisplayName("Find by start city should return all trips")
     void whenFindByStartCity_thenReturnAllCities() {
-        Trip trip1 = new Trip("Lisbon", "Porto", "2021-01-01", "2021-01-02", 100);
-        Trip trip2 = new Trip("Lisbon", "Faro", "2021-01-01", "2021-01-02", 100);
-        Trip trip3 = new Trip("Faro", "Lisbon", "2021-01-01", "2021-01-02", 100);
+        
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        City city3 = new City("Faro");
+
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.persist(city3);
+        entityManager.flush();
+
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+        
+        Trip trip1 = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        Trip trip2 = new Trip(city1, city3, originDate, destinationDate, 100.0);
+        Trip trip3 = new Trip(city2, city3, originDate, destinationDate, 100.0);
 
         entityManager.persist(trip1);
         entityManager.persist(trip2);
@@ -79,20 +115,31 @@ public class TripRepositoryTest {
         entityManager.flush();
 
         // when
-        List<Trip> allTrips = tripRepository.findByStartCity("Lisbon");
-
+        List<Trip> allTrips = tripRepository.findByOriginCityCityName("Lisbon");
         // then
         
-        assertThat(allTrips).hasSize(2).extracting(Trip::getStartCity).containsOnly(trip1.getStartCity(), trip2.getStartCity());
-        assertThat(allTrips).hasSize(2).extracting(Trip::getEndCity).containsOnly(trip1.getEndCity(), trip2.getEndCity());
+        assertThat(allTrips).hasSize(2).extracting(Trip::getOriginCity).containsOnly(trip1.getOriginCity(), trip2.getOriginCity());
+        assertThat(allTrips).hasSize(2).extracting(Trip::getDestinationCity).containsOnly(trip1.getDestinationCity(), trip2.getDestinationCity());
     }
 
     @Test
     @DisplayName("Find by end city should return all trips")
     void whenFindByEndCity_thenReturnAllCities() {
-        Trip trip1 = new Trip("Lisbon", "Porto", "2021-01-01", "2021-01-02", 100);
-        Trip trip2 = new Trip("Porto", "Lisbon", "2021-01-01", "2021-01-02", 100);
-        Trip trip3 = new Trip("Faro", "Lisbon", "2021-01-01", "2021-01-02", 100);
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        City city3 = new City("Faro");
+        
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.persist(city3);
+        entityManager.flush();
+
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip1 = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        Trip trip2 = new Trip(city2, city1, originDate, destinationDate, 100.0);
+        Trip trip3 = new Trip(city3, city1, originDate, destinationDate, 100.0);
 
         entityManager.persist(trip1);
         entityManager.persist(trip2);
@@ -100,33 +147,45 @@ public class TripRepositoryTest {
         entityManager.flush();
 
         // when
-        List<Trip> allTrips = tripRepository.findByEndCity("Lisbon");
+        List<Trip> allTrips = tripRepository.findByDestinationCityCityName("Lisbon");
 
         // then
         
-        assertThat(allTrips).hasSize(2).extracting(Trip::getStartCity).containsOnly(trip2.getStartCity(), trip3.getStartCity());
-        assertThat(allTrips).hasSize(2).extracting(Trip::getEndCity).containsOnly(trip2.getEndCity(), trip3.getEndCity());
+        assertThat(allTrips).hasSize(2).extracting(Trip::getOriginCity).containsOnly(trip2.getOriginCity(), trip3.getOriginCity());
+        assertThat(allTrips).hasSize(2).extracting(Trip::getDestinationCity).containsOnly(trip2.getDestinationCity(), trip3.getDestinationCity());
     }
 
     @Test
     @DisplayName("Find by start and end city should return all trips")
     void whenFindByStartAndEndCity_thenReturnAllCities() {
-        Trip trip1 = new Trip("Lisbon", "Porto", "2021-01-01", "2021-01-02", 100);
-        Trip trip2 = new Trip("Porto", "Lisbon", "2021-01-01", "2021-01-02", 100);
-        Trip trip3 = new Trip("Faro", "Lisbon", "2021-01-01", "2021-01-02", 100);
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        City city3 = new City("Faro");
+        
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.persist(city3);
+        entityManager.flush();
 
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip1 = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        Trip trip2 = new Trip(city2, city1, originDate, destinationDate, 100.0);
+        Trip trip3 = new Trip(city3, city1, originDate, destinationDate, 100.0);
+        
         entityManager.persist(trip1);
         entityManager.persist(trip2);
         entityManager.persist(trip3);
         entityManager.flush();
 
         // when
-        List<Trip> allTrips = tripRepository.findByStartCityAndEndCity("Lisbon", "Porto");
+        List<Trip> allTrips = tripRepository.findByOriginCityCityNameAndDestinationCityCityName("Lisbon", "Porto");
 
         // then
         
-        assertThat(allTrips).hasSize(1).extracting(Trip::getStartCity).containsOnly(trip1.getStartCity());
-        assertThat(allTrips).hasSize(1).extracting(Trip::getEndCity).containsOnly(trip1.getEndCity());
+        assertThat(allTrips).hasSize(1).extracting(Trip::getOriginCity).containsOnly(trip1.getOriginCity());
+        assertThat(allTrips).hasSize(1).extracting(Trip::getDestinationCity).containsOnly(trip1.getDestinationCity());
     }
 }
 

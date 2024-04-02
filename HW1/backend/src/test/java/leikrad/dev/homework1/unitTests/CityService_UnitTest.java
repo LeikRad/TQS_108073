@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,9 +49,6 @@ class CityService_UnitTest {
         Mockito.when(cityRepository.findByCityId(city2.getCityId())).thenReturn(Optional.of(city2));
         Mockito.when(cityRepository.findByCityId(city3.getCityId())).thenReturn(Optional.of(city3));
         Mockito.when(cityRepository.findByCityId(-1L)).thenReturn(Optional.empty());
-        Mockito.when(cityRepository.save(city1)).thenReturn(city1);
-        Mockito.when(cityRepository.save(city2)).thenReturn(city2);
-        Mockito.when(cityRepository.save(city3)).thenReturn(city3);
     }
 
     @Test
@@ -120,30 +118,39 @@ class CityService_UnitTest {
     @Test
     @DisplayName("Test create city")
     void testCreateCity() {
-        City city = new City("Lisbon");
-        city.setCityId(1L);
+        City actualCity = new City("Lisbon");
+        City actualCreatedCity = new City("Lisbon");
+        
+        actualCreatedCity.setCityId(1L);
+        
+        Mockito.when(cityRepository.save(actualCity)).thenReturn(actualCreatedCity);
 
-        City createdCity = cityManagerService.createCity(city);
+        City createdCity = cityManagerService.createCity(actualCity);
 
         assertThat(createdCity).isNotNull();
-        assertThat(createdCity.getCityId()).isEqualTo(city.getCityId());
+        assertThat(createdCity.getCityId()).isEqualTo(actualCreatedCity.getCityId());
         verifyCreateCityIsCalledOnce();
     }
 
     @Test
     @DisplayName("Test update city")
     void testUpdateCity() {
-        City city = new City("Lisbon");
-        city.setCityId(1L);
+        City actualCity = new City("Lisbon");
+        City actualCreatedCity = new City("Lisbon");
+        City actualCityUpdate = new City("Porto");
 
-        City createdCity = cityManagerService.createCity(city);
+        actualCreatedCity.setCityId(1L);
+        actualCityUpdate.setCityId(1L);
+        
+        Mockito.when(cityRepository.save(actualCity)).thenReturn(actualCreatedCity);
+        Mockito.when(cityRepository.save(actualCityUpdate)).thenReturn(actualCityUpdate);
 
-        city.setCityName("Porto");
-
-        City updatedCity = cityManagerService.updateCity(city);
+        cityManagerService.createCity(actualCity);
+        City updatedCity = cityManagerService.updateCity(actualCityUpdate);
 
         assertThat(updatedCity).isNotNull();
-        assertThat(updatedCity.getCityId()).isEqualTo(city.getCityId());
+        assertThat(updatedCity.getCityId()).isEqualTo(actualCityUpdate.getCityId());
+        assertThat(updatedCity.getCityName()).isEqualTo(actualCityUpdate.getCityName());
         verifyCreateCityIsCalledTwice();
     }
     

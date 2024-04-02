@@ -57,9 +57,6 @@ class ReservationService_UnitTest {
         Mockito.when(reservationRepository.findByReservationId(reservation1.getReservationId())).thenReturn(Optional.of(reservation1));
         Mockito.when(reservationRepository.findByReservationId(reservation2.getReservationId())).thenReturn(Optional.of(reservation2));
         Mockito.when(reservationRepository.findByReservationId(reservation3.getReservationId())).thenReturn(Optional.of(reservation3));
-        Mockito.when(reservationRepository.save(reservation1)).thenReturn(reservation1);
-        Mockito.when(reservationRepository.save(reservation2)).thenReturn(reservation2);
-        Mockito.when(reservationRepository.save(reservation3)).thenReturn(reservation3);
     }
 
     @Test
@@ -200,6 +197,8 @@ class ReservationService_UnitTest {
 
         reservation1.setReservationId(1L);
 
+        Mockito.when(reservationRepository.save(reservation1)).thenReturn(reservation1);
+
         Reservation reservation = reservationManagerService.createReservation(reservation1);
 
         assertThat(reservation).isNotNull();
@@ -222,20 +221,23 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        String uuid = UUID.randomUUID().toString();
+        Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
+        Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
+        
+        actualReservation.setReservationId(1L);
+        actualReservationUpdate.setReservationId(1L);
 
-        reservation1.setReservationId(1L);
+        Mockito.when(reservationRepository.save(actualReservation)).thenReturn(actualReservation);
+        Mockito.when(reservationRepository.save(actualReservationUpdate)).thenReturn(actualReservationUpdate);
 
-        Reservation reservation = reservationManagerService.createReservation(reservation1);
-
-        reservation.setPersonName("Jane Doe");
-
-        Reservation updatedReservation = reservationManagerService.updateReservation(reservation);
+        Reservation reservation = reservationManagerService.createReservation(actualReservation);
+        Reservation updatedReservation = reservationManagerService.updateReservation(actualReservationUpdate);
 
         assertThat(updatedReservation).isNotNull();
-        assertThat(updatedReservation.getPersonName()).isEqualTo(reservation.getPersonName());
-        assertThat(updatedReservation.getPhoneNumber()).isEqualTo(reservation.getPhoneNumber());
-        assertThat(updatedReservation.getReservationId()).isEqualTo(reservation.getReservationId());
+        assertThat(updatedReservation.getPersonName()).isEqualTo(actualReservationUpdate.getPersonName());
+        assertThat(updatedReservation.getPhoneNumber()).isEqualTo(actualReservationUpdate.getPhoneNumber());
+        assertThat(updatedReservation.getReservationId()).isEqualTo(actualReservationUpdate.getReservationId());
         verifyCreateCityIsCalledTwice();
     }
 

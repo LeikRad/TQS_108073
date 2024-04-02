@@ -65,7 +65,7 @@ class ReservationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find all should return all cities")
+    @DisplayName("Find all should return all reservations")
     void whenFindAll_thenReturnAllCities() {
         City city1 = new City("Lisbon");
         City city2 = new City("Porto");

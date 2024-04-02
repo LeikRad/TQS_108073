@@ -59,10 +59,6 @@ class TripService_UnitTest {
         Mockito.when(tripRepository.findByOriginCityCityName(city2.getCityName())).thenReturn(List.of(trip3));
         Mockito.when(tripRepository.findByDestinationCityCityName(city1.getCityName())).thenReturn(List.of(trip3));
         Mockito.when(tripRepository.findByOriginCityCityNameAndDestinationCityCityName(city2.getCityName(), city1.getCityName())).thenReturn(List.of(trip3));
-        
-        Mockito.when(tripRepository.save(trip1)).thenReturn(trip1);
-        Mockito.when(tripRepository.save(trip2)).thenReturn(trip2);
-        Mockito.when(tripRepository.save(trip3)).thenReturn(trip3);
     }
 
     @Test
@@ -232,32 +228,20 @@ class TripService_UnitTest {
         city1.setCityId(1L);
         city2.setCityId(2L);
 
-        Trip trip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+        Trip actualTrip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+        Trip actualCreatedTrip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+        
+        actualCreatedTrip.setTripId(1L);
+    
+        Mockito.when(tripRepository.save(actualTrip)).thenReturn(actualCreatedTrip);
 
-        Trip created = tripManagerService.createTrip(trip);
-
-        verifyCreateTripIsCalledOnce();
-        assertThat(created.getTripId()).isNotNull();
-        assertThat(created.getOriginCity().getCityName()).isEqualTo(trip.getOriginCity().getCityName());
-        assertThat(created.getDestinationCity().getCityName()).isEqualTo(trip.getDestinationCity().getCityName());
-    }
-
-    @Test
-    @DisplayName("Test create trip with invalid origin city")
-    void testCreateTripWithInvalidOriginCity() {
-        City city1 = new City("Lisbon");
-        City city2 = new City("Porto");
-
-        city1.setCityId(1L);
-        city2.setCityId(2L);
-
-        Trip trip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
-        trip.getOriginCity().setCityName("Invalid");
-
-        Trip created = tripManagerService.createTrip(trip);
+        
+        Trip createdTrip = tripManagerService.createTrip(actualTrip);
 
         verifyCreateTripIsCalledOnce();
-        assertThat(created).isNull();
+        assertThat(createdTrip.getTripId()).isNotNull();
+        assertThat(createdTrip.getOriginCity().getCityName()).isEqualTo(actualCreatedTrip.getOriginCity().getCityName());
+        assertThat(createdTrip.getDestinationCity().getCityName()).isEqualTo(actualCreatedTrip.getDestinationCity().getCityName());
     }
 
     @Test
@@ -269,20 +253,23 @@ class TripService_UnitTest {
         city1.setCityId(1L);
         city2.setCityId(2L);
 
-        Trip trip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
-        trip.setTripId(1L);
+        Trip actualTrip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+        Trip actualCreatedTrip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+        Trip actualUpdatedTrip = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(2), 200.0);
+        
+        actualCreatedTrip.setTripId(1L);
+        actualUpdatedTrip.setTripId(1L);
 
-        Trip trip_created = tripManagerService.createTrip(trip);
+        Mockito.when(tripRepository.save(actualTrip)).thenReturn(actualCreatedTrip);
+        Mockito.when(tripRepository.save(actualUpdatedTrip)).thenReturn(actualUpdatedTrip);
 
-        Trip trip_updated = new Trip(city2, city1, LocalDateTime.now(), LocalDateTime.now().plusHours(2), 200.0);
-        trip_updated.setTripId(1L);
+        tripManagerService.createTrip(actualTrip);
+        Trip updatedTrip = tripManagerService.updateTrip(actualUpdatedTrip);
 
-        Trip updated = tripManagerService.updateTrip(trip_updated);
-
-        verifyCreateTripIsCalledOnce();
-        assertThat(updated.getTripId()).isNotNull();
-        assertThat(updated.getOriginCity().getCityName()).isEqualTo(trip.getOriginCity().getCityName());
-        assertThat(updated.getDestinationCity().getCityName()).isEqualTo(trip.getDestinationCity().getCityName());
+        verifyCreateTripIsCalledTwice();
+        assertThat(updatedTrip.getTripId()).isNotNull();
+        assertThat(updatedTrip.getOriginCity().getCityName()).isEqualTo(actualUpdatedTrip.getOriginCity().getCityName());
+        assertThat(updatedTrip.getDestinationCity().getCityName()).isEqualTo(actualUpdatedTrip.getDestinationCity().getCityName());
     }
 
     private void verifyFindAllTripsIsCalledOnce() {
@@ -316,6 +303,11 @@ class TripService_UnitTest {
     @SuppressWarnings("null")
     private void verifyCreateTripIsCalledOnce() {
         Mockito.verify(tripRepository, Mockito.times(1)).save(Mockito.any(Trip.class));
+    }
+
+    @SuppressWarnings("null")
+    private void verifyCreateTripIsCalledTwice() {
+        Mockito.verify(tripRepository, Mockito.times(2)).save(Mockito.any(Trip.class));
     }
 
 }

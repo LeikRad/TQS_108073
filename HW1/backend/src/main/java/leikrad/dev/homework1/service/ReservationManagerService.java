@@ -28,4 +28,17 @@ public class ReservationManagerService {
         }
     }
 
+    public Reservation createReservation(Reservation reservation) {
+        if (reservation.getReservationId() != null) {
+            reservation.setReservationId(null);
+        }
+        return reservationRepository.save(reservation);
+    }
+
+    public Reservation updateReservation(Reservation reservation) {
+        if (reservation.getReservationId() == null) {
+            return null;
+        }
+        return reservationRepository.save(reservation);
+    }
 }

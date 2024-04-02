@@ -28,4 +28,19 @@ public class CityManagerService {
         }
     }
 
+    public City createCity(City city) {
+        if (city.getCityId() != null) {
+            city.setCityId(null);
+        }
+
+        return cityRepository.save(city);
+    }
+
+    public City updateCity(City city) {
+        if (city.getCityId() == null) {
+            return null;
+        }
+        return cityRepository.save(city);
+    }
+
 }

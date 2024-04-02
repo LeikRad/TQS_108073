@@ -40,5 +40,19 @@ public class TripManagerService {
         return tripRepository.findByOriginCityCityNameAndDestinationCityCityName(originCityName, destinationCityName);
     }
 
+    public Trip createTrip(Trip trip) {
+        if (trip.getTripId() != null) {
+            trip.setTripId(null);
+        }
+        return tripRepository.save(trip);
+    }
+
+    public Trip updateTrip(Trip trip) {
+        if (trip.getTripId() == null) {
+            return null;
+        }
+        return tripRepository.save(trip);
+    }
+
 
 }

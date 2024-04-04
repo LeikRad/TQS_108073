@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import leikrad.dev.homework1.data.trip.*;
 
 @Service
@@ -39,13 +40,17 @@ public class TripManagerService {
     public Trip updateTrip(Trip trip) {
         Optional<Trip> existingTrip = tripRepository.findByTripId(trip.getTripId());
         if (existingTrip.isEmpty()) {
-            throw new IllegalArgumentException("Trip not found");
+            throw new EntityNotFoundException("Trip not found");
         }
 
         return tripRepository.save(trip);
     }
 
     public void deleteTrip(Long tripId) {
+        Optional<Trip> existingTrip = tripRepository.findByTripId(tripId);
+        if (existingTrip.isEmpty()) {
+            throw new EntityNotFoundException("Trip not found");
+        }
         tripRepository.deleteByTripId(tripId);
     }
 

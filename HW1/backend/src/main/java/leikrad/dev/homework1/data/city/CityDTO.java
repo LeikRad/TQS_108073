@@ -6,4 +6,12 @@ import lombok.*;
 public class CityDTO {
     private Long cityId;
     private String cityName;
+
+    public static CityDTO fromCityEntity(City city) {
+        return new CityDTO(city.getCityId(), city.getCityName());
+    }
+
+    public City toCityEntity() {
+        return new City(cityId, cityName);
+    }
 }

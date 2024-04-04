@@ -14,4 +14,12 @@ public class TripDTO {
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
     private Double price;
+
+    public static TripDTO fromTripEntity(Trip trip) {
+        return new TripDTO(trip.getTripId(), CityDTO.fromCityEntity(trip.getOriginCity()), CityDTO.fromCityEntity(trip.getDestinationCity()), trip.getDepartureDate(), trip.getArrivalDate(), trip.getPrice());
+    }
+
+    public Trip toTripEntity() {
+        return new Trip(tripId, originCity.toCityEntity(), destinationCity.toCityEntity(), departureDate, arrivalDate, price);
+    }
 }

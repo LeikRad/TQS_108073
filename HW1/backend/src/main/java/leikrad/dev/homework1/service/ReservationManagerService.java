@@ -3,8 +3,11 @@ package leikrad.dev.homework1.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import leikrad.dev.homework1.data.reservation.*;
 
+@Service
 public class ReservationManagerService {
     
     private ReservationRepository reservationRepository;
@@ -22,10 +25,27 @@ public class ReservationManagerService {
     }
 
     public void deleteReservation(Long reservationId) {
-        Optional<Reservation> reservation = reservationRepository.findByReservationId(reservationId);
-        if (reservation.isPresent()) {
-            reservationRepository.deleteByReservationId(reservationId);
-        }
+        reservationRepository.deleteByReservationId(reservationId);
     }
 
+    public Optional<Reservation> getReservationByUuid(String uuid) {
+        return reservationRepository.findByUuid(uuid);
+    }
+
+    public Reservation createReservation(Reservation reservation) {
+        if (reservation.getReservationId() != null) {
+            throw new IllegalArgumentException("Reservation ID must be null");
+        }
+        
+        return reservationRepository.save(reservation);
+    }
+
+    public Reservation updateReservation(Reservation reservation) {
+        Optional<Reservation> existingReservation = reservationRepository.findByReservationId(reservation.getReservationId());
+        if (existingReservation.isEmpty()) {
+            throw new IllegalArgumentException("Reservation not found");
+        }
+
+        return reservationRepository.save(reservation);
+    }
 }

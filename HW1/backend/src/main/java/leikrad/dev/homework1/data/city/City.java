@@ -1,6 +1,7 @@
 package leikrad.dev.homework1.data.city;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
@@ -13,6 +14,7 @@ public class City {
     private Long cityId;
 
     @NonNull
+    @NotNull
     @Column(name = "city_name")
     private String cityName;
 }

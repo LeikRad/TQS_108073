@@ -10,7 +10,7 @@ import org.springframework.lang.NonNull;
 @Repository
 public interface CityRepository extends JpaRepository<City, Long>{
 
-    public Optional<City> findByCityId(Long cityID);
+    public Optional<City> findByCityId(Long cityId);
 
     @NonNull
     public List<City> findAll();

@@ -3,12 +3,15 @@ package leikrad.dev.homework1.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import leikrad.dev.homework1.data.city.*;
 
+@Service
 public class CityManagerService {
     
     private CityRepository cityRepository;
-
+    
     public CityManagerService(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
@@ -21,26 +24,24 @@ public class CityManagerService {
         return cityRepository.findByCityId(cityId);
     }
 
-    public void deleteCity(Long cityId) {
-        Optional<City> city = cityRepository.findByCityId(cityId);
-        if (city.isPresent()) {
-            cityRepository.deleteByCityId(cityId);
-        }
-    }
-
-    public City createCity(City city) {
+   public City createCity(City city) {
         if (city.getCityId() != null) {
-            city.setCityId(null);
+            throw new IllegalArgumentException("City ID must be null");
         }
-
+        
         return cityRepository.save(city);
     }
 
     public City updateCity(City city) {
-        if (city.getCityId() == null) {
-            return null;
+        Optional<City> existingCity = cityRepository.findByCityId(city.getCityId());
+        if (existingCity.isEmpty()) {
+            throw new IllegalArgumentException("City not found");
         }
+
         return cityRepository.save(city);
     }
 
+    public void deleteCity(Long cityId) {
+        cityRepository.deleteByCityId(cityId);
+    }
 }

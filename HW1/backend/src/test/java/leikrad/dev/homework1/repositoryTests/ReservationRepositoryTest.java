@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,10 +126,11 @@ class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Create Reservation")
-    public void testCreateReservation() {
+    void testCreateReservation() {
         // given
         Reservation reservation = new Reservation();
         reservation.setPersonName("Another name");
+
         // when
         Reservation savedReservation = reservationRepository.save(reservation);
 
@@ -144,7 +143,7 @@ class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Update Reservation")
-    public void testUpdateReservation() {
+    void testUpdateReservation() {
         // given
         Reservation reservation = new Reservation();
         reservation.setPersonName("Test Reservation");

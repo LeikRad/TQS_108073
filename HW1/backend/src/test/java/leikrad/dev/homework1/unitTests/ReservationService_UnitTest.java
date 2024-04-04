@@ -1,6 +1,7 @@
 package leikrad.dev.homework1.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,9 +43,9 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
-        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321", UUID.randomUUID().toString());
-        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789", UUID.randomUUID().toString());
+        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
+        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321", "d2x3c4d5e6f7g8h9i0");
+        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789", "xa2b3c4d5e6f7g8h9i0");
 
         reservation1.setReservationId(1L);
         reservation2.setReservationId(2L);
@@ -57,6 +57,10 @@ class ReservationService_UnitTest {
         Mockito.when(reservationRepository.findByReservationId(reservation1.getReservationId())).thenReturn(Optional.of(reservation1));
         Mockito.when(reservationRepository.findByReservationId(reservation2.getReservationId())).thenReturn(Optional.of(reservation2));
         Mockito.when(reservationRepository.findByReservationId(reservation3.getReservationId())).thenReturn(Optional.of(reservation3));
+
+        Mockito.when(reservationRepository.findByUuid(reservation1.getUuid())).thenReturn(Optional.of(reservation1));
+        Mockito.when(reservationRepository.findByUuid(reservation2.getUuid())).thenReturn(Optional.of(reservation2));
+        Mockito.when(reservationRepository.findByUuid(reservation3.getUuid())).thenReturn(Optional.of(reservation3));
     }
 
     @Test
@@ -72,9 +76,9 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
-        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321", UUID.randomUUID().toString());
-        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789", UUID.randomUUID().toString());
+        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
+        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321", "d2x3c4d5e6f7g8h9i0");
+        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789", "xa2b3c4d5e6f7g8h9i0"); 
 
         reservation1.setReservationId(1L);
         reservation2.setReservationId(2L);
@@ -100,84 +104,37 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
         
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation reservation = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
 
-        reservation1.setReservationId(1L);
+        reservation.setReservationId(1L);
 
-        Reservation reservation = reservationManagerService.getReservationDetails(reservation1.getReservationId()).orElse(null);
+        Reservation found = reservationManagerService.getReservationDetails(reservation.getReservationId()).orElse(null);
 
-        verifyFindReservationByIdIsCalledOnce();
-        assertThat(reservation).isNotNull();
-        assertThat(reservation.getPersonName()).isEqualTo(reservation1.getPersonName());
-        assertThat(reservation.getPhoneNumber()).isEqualTo(reservation1.getPhoneNumber());
-        assertThat(reservation.getReservationId()).isEqualTo(reservation1.getReservationId());
+        verifyFindByReservationIdCalledOnce();
+        assertThat(found).isNotNull();
+        assertThat(found.getPersonName()).isEqualTo(reservation.getPersonName());
+        assertThat(found.getPhoneNumber()).isEqualTo(reservation.getPhoneNumber());
+        assertThat(found.getReservationId()).isEqualTo(reservation.getReservationId());
+        assertThat(found.getUuid()).isEqualTo(reservation.getUuid());
     }
 
     @Test
     @DisplayName("Test get reservation by id with invalid id")
     void testGetReservationDetailsWithInvalidId() {
-        City city1 = new City("Lisbon");
-        City city2 = new City("Porto");
-
-        city1.setCityId(1L);
-        city2.setCityId(2L);
-
-        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
-
-        trip1.setTripId(1L);
-
-        Reservation reservation = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
-
-        reservation.setReservationId(1L);
-
         Reservation found = reservationManagerService.getReservationDetails(-1L).orElse(null);
 
-        verifyFindReservationByIdIsCalledOnce();
+        verifyFindByReservationIdCalledOnce();
         assertThat(found).isNull();
     }
 
     @Test
     @DisplayName("Test delete reservation")
     void whenValidId_thenReservationShouldBeDeleted() {
-        City city1 = new City("Lisbon");
-        City city2 = new City("Porto");
+        Long reservationId = 1L;
 
-        city1.setCityId(1L);
-        city2.setCityId(2L);
+        reservationManagerService.deleteReservation(reservationId);
 
-        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
-
-        trip1.setTripId(1L);
-
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
-
-        reservation1.setReservationId(1L);
-
-        reservationManagerService.deleteReservation(reservation1.getReservationId());
-
-        verifyDeleteReservationByIdIsCalledOnce();
-    }
-
-    @Test
-    @DisplayName("Test delete reservation with invalid id")
-    void whenInvalidId_thenReservationShouldNotBeDeleted() {
-        City city1 = new City("Lisbon");
-        City city2 = new City("Porto");
-
-        city1.setCityId(1L);
-        city2.setCityId(2L);
-
-        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
-
-        trip1.setTripId(1L);
-
-        Reservation reservation = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
-
-        reservation.setReservationId(1L);
-
-        reservationManagerService.deleteReservation(-1L);
-
-        verifyDeleteReservationByIdWasntCalled();
+        verifyDeleteByReservationIdIsCalledOnce();
     }
 
     @Test
@@ -193,19 +150,18 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        
+        // copy of actualRes
+        Reservation actualCreatedRes = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        actualCreatedRes.setReservationId(1L);
 
-        reservation1.setReservationId(1L);
+        Mockito.when(reservationRepository.save(actualRes)).thenReturn(actualCreatedRes);
 
-        Mockito.when(reservationRepository.save(reservation1)).thenReturn(reservation1);
+        Reservation reservation = reservationManagerService.createReservation(actualRes);
 
-        Reservation reservation = reservationManagerService.createReservation(reservation1);
-
-        assertThat(reservation).isNotNull();
-        assertThat(reservation.getPersonName()).isEqualTo(reservation1.getPersonName());
-        assertThat(reservation.getPhoneNumber()).isEqualTo(reservation1.getPhoneNumber());
-        assertThat(reservation.getReservationId()).isEqualTo(reservation1.getReservationId());
-        verifyCreateCityIsCalledOnce();
+        assertThat(reservation).isNotNull().isEqualTo(actualCreatedRes);
+        verifySaveIsCalledOnce();
     }
 
     @Test
@@ -223,46 +179,101 @@ class ReservationService_UnitTest {
 
         String uuid = UUID.randomUUID().toString();
         Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
+        Reservation actualCreateddReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
         Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
         
-        actualReservation.setReservationId(1L);
+        actualCreateddReservation.setReservationId(1L);
         actualReservationUpdate.setReservationId(1L);
 
-        Mockito.when(reservationRepository.save(actualReservation)).thenReturn(actualReservation);
+        Mockito.when(reservationRepository.save(actualReservation)).thenReturn(actualCreateddReservation);
         Mockito.when(reservationRepository.save(actualReservationUpdate)).thenReturn(actualReservationUpdate);
 
-        Reservation reservation = reservationManagerService.createReservation(actualReservation);
+        reservationManagerService.createReservation(actualReservation);
         Reservation updatedReservation = reservationManagerService.updateReservation(actualReservationUpdate);
 
-        assertThat(updatedReservation).isNotNull();
-        assertThat(updatedReservation.getPersonName()).isEqualTo(actualReservationUpdate.getPersonName());
-        assertThat(updatedReservation.getPhoneNumber()).isEqualTo(actualReservationUpdate.getPhoneNumber());
-        assertThat(updatedReservation.getReservationId()).isEqualTo(actualReservationUpdate.getReservationId());
-        verifyCreateCityIsCalledTwice();
+        assertThat(updatedReservation).isNotNull().isEqualTo(actualReservationUpdate);
+        verifySaveIsCalledTwice();
     }
 
+    @Test
+    @DisplayName("Test update reservation with invalid id")
+    void testUpdateReservationWithInvalidId() {
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+
+        city1.setCityId(1L);
+        city2.setCityId(2L);
+
+        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+
+        trip1.setTripId(1L);
+
+        String uuid = UUID.randomUUID().toString();
+        Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
+        Reservation actualCreatedReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
+        Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
+        
+        actualCreatedReservation.setReservationId(1L);
+        actualReservationUpdate.setReservationId(-1L);
+
+        Mockito.when(reservationRepository.save(actualReservation)).thenReturn(actualCreatedReservation);
+        Mockito.when(reservationRepository.save(actualReservationUpdate)).thenReturn(actualReservationUpdate);
+
+        reservationManagerService.createReservation(actualReservation);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            reservationManagerService.updateReservation(actualReservationUpdate);
+        });
+
+        verifySaveIsCalledOnce();
+        assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("Reservation not found");
+    }
+
+    @Test
+    @DisplayName("Test Create with invalid reservation")
+    void testCreateWithInvalidReservation() {
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+
+        city1.setCityId(1L);
+        city2.setCityId(2L);
+
+        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+
+        trip1.setTripId(1L);
+
+        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        actualRes.setReservationId(1L);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            reservationManagerService.createReservation(actualRes);
+        });
+
+        assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("Reservation ID must be null");
+        verifySaveIsntCalled();
+    }
     
     private void verifyFindAllReservationsIsCalledOnce() {
         Mockito.verify(reservationRepository, Mockito.times(1)).findAll();
     }
 
-    private void verifyFindReservationByIdIsCalledOnce() {
+    private void verifyFindByReservationIdCalledOnce() {
         Mockito.verify(reservationRepository, Mockito.times(1)).findByReservationId(Mockito.anyLong());
     }
 
-    private void verifyDeleteReservationByIdIsCalledOnce() {
+    private void verifyDeleteByReservationIdIsCalledOnce() {
         Mockito.verify(reservationRepository, Mockito.times(1)).deleteByReservationId(Mockito.anyLong());
     }
 
-    private void verifyDeleteReservationByIdWasntCalled() {
-        Mockito.verify(reservationRepository, Mockito.times(0)).deleteByReservationId(Mockito.anyLong());
-    }
-
-    private void verifyCreateCityIsCalledOnce() {
+    private void verifySaveIsCalledOnce() {
         Mockito.verify(reservationRepository, Mockito.times(1)).save(Mockito.any(Reservation.class));
     }
 
-    private void verifyCreateCityIsCalledTwice() {
+    private void verifySaveIsCalledTwice() {
         Mockito.verify(reservationRepository, Mockito.times(2)).save(Mockito.any(Reservation.class));
+    }
+
+    private void verifySaveIsntCalled() {
+        Mockito.verify(reservationRepository, Mockito.never()).save(Mockito.any(Reservation.class));
     }
 }

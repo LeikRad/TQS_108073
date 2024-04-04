@@ -28,7 +28,7 @@ class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Valid ID should return reservation")
-    void whenFindById_thenReturnCity() {
+    void whenFindByReservationId_thenReturnCity() {
         // given
         City city1 = new City("Lisbon");
         City city2 = new City("Porto");
@@ -100,7 +100,7 @@ class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Delete by ID should remove reservation")
-    void whenDeleteById_thenRemoveReservation() {
+    void whenDeleteByReservationId_thenRemoveReservation() {
         // given
         City city1 = new City("Lisbon");
         City city2 = new City("Porto");
@@ -119,9 +119,10 @@ class ReservationRepositoryTest {
 
         // when
         reservationRepository.deleteByReservationId(reservation.getReservationId());
+        Reservation found = reservationRepository.findByReservationId(reservation.getReservationId()).orElse(null);
 
         // then
-        assertThat(reservationRepository.findByReservationId(reservation.getReservationId())).isEmpty();
+        assertThat(found).isNull();
     }
 
     @Test
@@ -129,16 +130,16 @@ class ReservationRepositoryTest {
     void testCreateReservation() {
         // given
         Reservation reservation = new Reservation();
-        reservation.setPersonName("Another name");
+        reservation.setPersonName("A name");
 
         // when
         Reservation savedReservation = reservationRepository.save(reservation);
 
         // then
+
         Reservation found = reservationRepository.findByReservationId(savedReservation.getReservationId()).orElse(null);
 
-        assertThat(found).isNotNull();
-        assertThat(found.getPersonName()).isEqualTo(reservation.getPersonName());
+        assertThat(found).isNotNull().isEqualTo(savedReservation);
     }
 
     @Test
@@ -154,8 +155,34 @@ class ReservationRepositoryTest {
         reservationRepository.save(reservation);
 
         // then
-        Reservation updatedReservation = reservationRepository.findByReservationId(reservation.getReservationId()).orElse(null);
-        assertThat(updatedReservation).isNotNull();
-        assertThat(updatedReservation.getPersonName()).isEqualTo(reservation.getPersonName());
+        Reservation found = reservationRepository.findByReservationId(reservation.getReservationId()).orElse(null);
+
+        assertThat(found).isNotNull().isEqualTo(reservation);
+    }
+
+    @Test
+    @DisplayName("Find by UUID")
+    void testFindByUuid() {
+        // given
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+        entityManager.persist(city1);
+        entityManager.persist(city2);
+        entityManager.flush();
+        LocalDateTime originDate = LocalDateTime.now();
+        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
+
+        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
+        entityManager.persist(trip);
+        entityManager.flush();
+        
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
+        entityManager.persistAndFlush(reservation);
+
+        // when
+        Reservation found = reservationRepository.findByUuid(reservation.getUuid()).orElse(null);
+
+        // then
+        assertThat(found).isNotNull().isEqualTo(reservation);
     }
 }

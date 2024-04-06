@@ -27,7 +27,7 @@ import leikrad.dev.homework1.data.city.CityRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "IT-config.properties")
-class TripTest {
+class TripIT {
     
     @LocalServerPort
     private int port;
@@ -44,6 +44,7 @@ class TripTest {
     @AfterEach
     void tearDown() {
         tripRepository.deleteAll();
+        cityRepository.deleteAll();
     }
 
     @Test

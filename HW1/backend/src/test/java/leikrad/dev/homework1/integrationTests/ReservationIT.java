@@ -29,7 +29,7 @@ import leikrad.dev.homework1.data.reservation.ReservationRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "IT-config.properties")
-class ReservationTest {
+class ReservationIT {
     
     @LocalServerPort
     private int port;
@@ -49,6 +49,8 @@ class ReservationTest {
     @AfterEach
     void tearDown() {
         reservationRepository.deleteAll();
+        tripRepository.deleteAll();
+        cityRepository.deleteAll();
     }
 
     @Test

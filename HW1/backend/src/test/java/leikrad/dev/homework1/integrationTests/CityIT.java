@@ -24,7 +24,7 @@ import leikrad.dev.homework1.data.city.CityRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "IT-config.properties")
-class CityTest {
+class CityIT {
 
     @LocalServerPort
     private int port;

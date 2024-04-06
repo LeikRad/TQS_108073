@@ -37,8 +37,8 @@ jobs:
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073
         working-directory: ./HW1/backend
       - name: Setup DockerCompose for Integration Tests
-        run: docker-compose -f docker-compose.yml up -d
-        working-directory: ./HW1/backend
+        run: docker compose up -d
+        working-directory: ./HW1
       - name: Integration Tests
         run: mvn install failsafe:integration-test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073
         working-directory: ./HW1/backend

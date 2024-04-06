@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import jakarta.persistence.EntityNotFoundException;
 import leikrad.dev.homework1.service.ReservationManagerService;
 import leikrad.dev.homework1.data.city.City;
 import leikrad.dev.homework1.data.reservation.*;
@@ -150,10 +151,10 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
         
         // copy of actualRes
-        Reservation actualCreatedRes = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation actualCreatedRes = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
         actualCreatedRes.setReservationId(1L);
 
         Mockito.when(reservationRepository.save(actualRes)).thenReturn(actualCreatedRes);
@@ -177,7 +178,7 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        String uuid = UUID.randomUUID().toString();
+        String uuid = "a1b2c3d4e5f6g7h8i9";
         Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
         Reservation actualCreateddReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
         Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
@@ -208,7 +209,7 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        String uuid = UUID.randomUUID().toString();
+        String uuid = "a1b2c3d4e5f6g7h8i9";
         Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
         Reservation actualCreatedReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
         Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
@@ -221,12 +222,12 @@ class ReservationService_UnitTest {
 
         reservationManagerService.createReservation(actualReservation);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
             reservationManagerService.updateReservation(actualReservationUpdate);
         });
 
         verifySaveIsCalledOnce();
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("Reservation not found");
+        assertThat(exception).isInstanceOf(EntityNotFoundException.class).hasMessage("Reservation not found");
     }
 
     @Test
@@ -242,7 +243,7 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
         actualRes.setReservationId(1L);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -251,6 +252,57 @@ class ReservationService_UnitTest {
 
         assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("Reservation ID must be null");
         verifySaveIsntCalled();
+    }
+
+    @Test
+    @DisplayName("Test get reservation by uuid")
+    void testGetReservationByUuid() {
+        City city1 = new City("Lisbon");
+        City city2 = new City("Porto");
+
+        city1.setCityId(1L);
+        city2.setCityId(2L);
+
+        Trip trip1 = new Trip(city1, city2, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 100.0);
+
+        trip1.setTripId(1L);
+
+        String uuid = "a1b2c3d4e5f6g7h8i9";
+        Reservation reservation = new Reservation(trip1, "John Doe", "123456789", uuid);
+
+        reservation.setReservationId(1L);
+
+        Reservation found = reservationManagerService.getReservationByUuid(uuid).orElse(null);
+
+        verifyFindByReservationByUuidCalledOnce();
+        assertThat(found).isNotNull();
+        assertThat(found.getPersonName()).isEqualTo(reservation.getPersonName());
+        assertThat(found.getPhoneNumber()).isEqualTo(reservation.getPhoneNumber());
+        assertThat(found.getReservationId()).isEqualTo(reservation.getReservationId());
+        assertThat(found.getUuid()).isEqualTo(reservation.getUuid());
+    }
+
+    @Test
+    @DisplayName("Test get reservation by uuid with invalid uuid")
+    void testGetReservationByUuidWithInvalidUuid() {
+        String uuid = UUID.randomUUID().toString();
+        Reservation found = reservationManagerService.getReservationByUuid(uuid).orElse(null);
+
+        verifyFindByReservationByUuidCalledOnce();
+        assertThat(found).isNull();
+    }
+
+    @Test
+    @DisplayName("Test delete reservation with invalid id")
+    void testDeleteReservationWithInvalidId() {
+        Long reservationId = -1L;
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            reservationManagerService.deleteReservation(reservationId);
+        });
+
+        verifyDeleteByReservationIdIsntCalled();
+        assertThat(exception).isInstanceOf(EntityNotFoundException.class).hasMessage("Reservation not found");
     }
     
     private void verifyFindAllReservationsIsCalledOnce() {
@@ -275,5 +327,13 @@ class ReservationService_UnitTest {
 
     private void verifySaveIsntCalled() {
         Mockito.verify(reservationRepository, Mockito.never()).save(Mockito.any(Reservation.class));
+    }
+
+    private void verifyDeleteByReservationIdIsntCalled() {
+        Mockito.verify(reservationRepository, Mockito.never()).deleteByReservationId(Mockito.anyLong());
+    }
+
+    private void verifyFindByReservationByUuidCalledOnce() {
+        Mockito.verify(reservationRepository, Mockito.times(1)).findByUuid(Mockito.anyString());
     }
 }

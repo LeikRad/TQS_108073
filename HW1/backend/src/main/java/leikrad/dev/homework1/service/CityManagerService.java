@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import leikrad.dev.homework1.data.city.*;
 
 @Service
@@ -35,13 +36,17 @@ public class CityManagerService {
     public City updateCity(City city) {
         Optional<City> existingCity = cityRepository.findByCityId(city.getCityId());
         if (existingCity.isEmpty()) {
-            throw new IllegalArgumentException("City not found");
+            throw new EntityNotFoundException("City not found");
         }
 
         return cityRepository.save(city);
     }
 
     public void deleteCity(Long cityId) {
+        Optional<City> existingCity = cityRepository.findByCityId(cityId);
+        if (existingCity.isEmpty()) {
+            throw new EntityNotFoundException("City not found");
+        }
         cityRepository.deleteByCityId(cityId);
     }
 }

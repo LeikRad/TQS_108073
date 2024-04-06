@@ -13,6 +13,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -146,12 +149,12 @@ class CityService_UnitTest {
 
         cityManagerService.createCity(actualCity);
 
-        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(EntityNotFoundException.class, () -> {
             cityManagerService.updateCity(actualCityUpdate);
         });
 
         verifySaveIsCalledOnce();
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("City not found");
+        assertThat(exception).isInstanceOf(EntityNotFoundException.class).hasMessage("City not found");
     }
 
     @Test
@@ -167,6 +170,19 @@ class CityService_UnitTest {
 
         verifySaveIsntCalled();
         assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("City ID must be null");
+    }
+
+    @Test
+    @DisplayName("Test delete with invalid city")
+    void testDeleteWithInvalidCity() {
+        Long cityId = -1L;
+
+        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            cityManagerService.deleteCity(cityId);
+        });
+
+        verifyDeleteByCityIdIsntCalled();
+        assertThat(exception).isInstanceOf(EntityNotFoundException.class).hasMessage("City not found");
     }
 
     private void verifyFindAllIsCalledOnce() {
@@ -191,6 +207,10 @@ class CityService_UnitTest {
     
     private void verifySaveIsntCalled() {
         Mockito.verify(cityRepository, VerificationModeFactory.times(0)).save(Mockito.any(City.class));
+    }
+
+    private void verifyDeleteByCityIdIsntCalled() {
+        Mockito.verify(cityRepository, VerificationModeFactory.times(0)).deleteByCityId(Mockito.anyLong());
     }
 
 }

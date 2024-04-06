@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import leikrad.dev.homework1.data.reservation.*;
 
 @Service
@@ -25,6 +26,10 @@ public class ReservationManagerService {
     }
 
     public void deleteReservation(Long reservationId) {
+        Optional<Reservation> existingReservation = reservationRepository.findByReservationId(reservationId);
+        if (existingReservation.isEmpty()) {
+            throw new EntityNotFoundException("Reservation not found");
+        }
         reservationRepository.deleteByReservationId(reservationId);
     }
 
@@ -43,7 +48,7 @@ public class ReservationManagerService {
     public Reservation updateReservation(Reservation reservation) {
         Optional<Reservation> existingReservation = reservationRepository.findByReservationId(reservation.getReservationId());
         if (existingReservation.isEmpty()) {
-            throw new IllegalArgumentException("Reservation not found");
+            throw new EntityNotFoundException("Reservation not found");
         }
 
         return reservationRepository.save(reservation);

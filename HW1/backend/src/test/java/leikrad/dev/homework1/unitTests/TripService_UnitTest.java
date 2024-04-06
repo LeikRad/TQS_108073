@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import jakarta.persistence.EntityNotFoundException;
 import leikrad.dev.homework1.data.city.City;
 import leikrad.dev.homework1.data.trip.*;
 import leikrad.dev.homework1.service.TripManagerService;
@@ -251,12 +252,12 @@ class TripService_UnitTest {
         Mockito.when(tripRepository.save(actualUpdatedTrip)).thenReturn(actualUpdatedTrip);
 
         tripManagerService.createTrip(actualTrip);
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
             tripManagerService.updateTrip(actualUpdatedTrip);
         });
 
         verifyCreateTripIsCalledOnce();
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("Trip not found");
+        assertThat(exception).isInstanceOf(EntityNotFoundException.class).hasMessage("Trip not found");
     }
 
     @Test
@@ -272,6 +273,17 @@ class TripService_UnitTest {
 
         verifyCreateTripIsntCalled();
         assertThat(exception).isInstanceOf(IllegalArgumentException.class).hasMessage("Trip ID must be null");
+    }
+
+    @Test
+    @DisplayName("Delete trip with invalid id")
+    void testDeleteTripWithInvalidId() {
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            tripManagerService.deleteTrip(-1L);
+        });
+
+        verifyDeleteTripByIdIsntCalled();
+        assertThat(exception).isInstanceOf(EntityNotFoundException.class).hasMessage("Trip not found");
     }
 
     private void verifyFindAllTripsIsCalledOnce() {
@@ -308,6 +320,10 @@ class TripService_UnitTest {
 
     private void verifyCreateTripIsntCalled() {
         Mockito.verify(tripRepository, Mockito.times(0)).save(Mockito.any(Trip.class));
+    }
+
+    private void verifyDeleteTripByIdIsntCalled() {
+        Mockito.verify(tripRepository, Mockito.times(0)).deleteByTripId(Mockito.anyLong());
     }
 
 }

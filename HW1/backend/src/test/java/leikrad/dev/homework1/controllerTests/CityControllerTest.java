@@ -135,7 +135,7 @@ class CityControllerTest {
 
         mvc.perform(delete("/api/city/{id}", city.getCityId())
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
         
         verify(cityManagerService, times(1)).deleteCity(city.getCityId());
     }

@@ -63,7 +63,7 @@ public class CityController {
         try {
             cityManagerService.deleteCity(cityId);
             logger.info("Deleted city with cityId: {}", cityId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (EntityNotFoundException e) {
             logger.error("Error deleting city: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

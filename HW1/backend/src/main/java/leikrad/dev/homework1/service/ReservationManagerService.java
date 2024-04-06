@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import leikrad.dev.homework1.data.reservation.*;
 
 @Service
@@ -25,6 +26,7 @@ public class ReservationManagerService {
         return reservationRepository.findByReservationId(reservationId);
     }
 
+    @Transactional
     public void deleteReservation(Long reservationId) {
         Optional<Reservation> existingReservation = reservationRepository.findByReservationId(reservationId);
         if (existingReservation.isEmpty()) {
@@ -37,14 +39,23 @@ public class ReservationManagerService {
         return reservationRepository.findByUuid(uuid);
     }
 
+    @Transactional
     public Reservation createReservation(Reservation reservation) {
         if (reservation.getReservationId() != null) {
             throw new IllegalArgumentException("Reservation ID must be null");
         }
+    
+        if (reservation.getUuid() != null) {
+            throw new IllegalArgumentException("UUID must be null");
+        }
+
+        String uuid = java.util.UUID.randomUUID().toString();
+        reservation.setUuid(uuid);
         
         return reservationRepository.save(reservation);
     }
 
+    @Transactional
     public Reservation updateReservation(Reservation reservation) {
         Optional<Reservation> existingReservation = reservationRepository.findByReservationId(reservation.getReservationId());
         if (existingReservation.isEmpty()) {

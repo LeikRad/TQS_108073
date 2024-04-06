@@ -58,8 +58,10 @@ class ReservationControllerTest {
 
         String uuid = UUID.randomUUID().toString();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  null);
-        Reservation createdReservation = new Reservation(trip, "John Doe", "123456789",  uuid);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation createdReservation = new Reservation(trip, "John Doe", "123456789");
+        createdReservation.setReservationId(1L);
+        createdReservation.setUuid(uuid);
         
         when(reservationManagerService.createReservation(Mockito.any())).thenReturn(createdReservation);
 
@@ -84,7 +86,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  null);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.createReservation(Mockito.any())).thenThrow(new IllegalArgumentException("Reservation id must be null"));
@@ -108,9 +110,9 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789",  null);
-        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321",  null);
-        Reservation reservation3 = new Reservation(trip, "John Doe", "123456789",  null);
+        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321");
+        Reservation reservation3 = new Reservation(trip, "John Doe", "123456789");
 
         List<Reservation> allReservations = List.of(reservation1, reservation2, reservation3);
 
@@ -138,7 +140,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  null);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.getReservationDetails(1L)).thenReturn(Optional.of(reservation));
@@ -174,7 +176,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  null);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
         reservation.setReservationId(1L);
 
         
@@ -211,7 +213,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  null);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.updateReservation(Mockito.any())).thenReturn(reservation);
@@ -236,7 +238,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  null);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
         reservation.setReservationId(-1L);
 
         when(reservationManagerService.updateReservation(Mockito.any())).thenThrow(new EntityNotFoundException("Reservation not found"));
@@ -262,7 +264,7 @@ class ReservationControllerTest {
 
         String uuid = UUID.randomUUID().toString();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789",  uuid);
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.getReservationByUuid(uuid)).thenReturn(Optional.of(reservation));

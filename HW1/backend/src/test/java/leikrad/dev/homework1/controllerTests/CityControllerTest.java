@@ -28,7 +28,6 @@ import static org.hamcrest.Matchers.hasSize;
 import java.util.List;
 import java.util.Optional;
 
-
 import leikrad.dev.homework1.boundary.CityController;
 import leikrad.dev.homework1.service.CityManagerService;
 import leikrad.dev.homework1.data.city.*;

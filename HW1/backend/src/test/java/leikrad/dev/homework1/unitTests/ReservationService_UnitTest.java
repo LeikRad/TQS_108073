@@ -44,13 +44,17 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
-        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321", "d2x3c4d5e6f7g8h9i0");
-        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789", "xa2b3c4d5e6f7g8h9i0");
+        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789");
+        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321");
+        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789");
 
         reservation1.setReservationId(1L);
         reservation2.setReservationId(2L);
         reservation3.setReservationId(3L);
+
+        reservation1.setUuid("a1b2c3d4e5f6g7h8i9");
+        reservation2.setUuid("d2x3c4d5e6f7g8h9i0");
+        reservation3.setUuid("xa2b3c4d5e6f7g8h9i0");
 
         List<Reservation> allReservations = List.of(reservation1, reservation2, reservation3);
 
@@ -77,13 +81,18 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
-        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321", "d2x3c4d5e6f7g8h9i0");
-        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789", "xa2b3c4d5e6f7g8h9i0"); 
+        Reservation reservation1 = new Reservation(trip1, "John Doe", "123456789");
+        Reservation reservation2 = new Reservation(trip1, "Jane Doe", "987654321");
+        Reservation reservation3 = new Reservation(trip1, "John Smith", "123456789"); 
 
         reservation1.setReservationId(1L);
         reservation2.setReservationId(2L);
         reservation3.setReservationId(3L);
+
+        reservation1.setUuid("a1b2c3d4e5f6g7h8i9");
+        reservation2.setUuid("d2x3c4d5e6f7g8h9i0");
+        reservation3.setUuid("xa2b3c4d5e6f7g8h9i0");
+
 
         List<Reservation> allReservations = reservationManagerService.getAllReservations();
 
@@ -105,9 +114,11 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
         
-        Reservation reservation = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
+        Reservation reservation = new Reservation(trip1, "John Doe", "123456789");
 
         reservation.setReservationId(1L);
+
+        reservation.setUuid("a1b2c3d4e5f6g7h8i9");
 
         Reservation found = reservationManagerService.getReservationDetails(reservation.getReservationId()).orElse(null);
 
@@ -151,11 +162,12 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
+        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789");
         
         // copy of actualRes
-        Reservation actualCreatedRes = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
+        Reservation actualCreatedRes = new Reservation(trip1, "John Doe", "123456789");
         actualCreatedRes.setReservationId(1L);
+        actualCreatedRes.setUuid("a1b2c3d4e5f6g7h8i9");
 
         Mockito.when(reservationRepository.save(actualRes)).thenReturn(actualCreatedRes);
 
@@ -179,12 +191,14 @@ class ReservationService_UnitTest {
         trip1.setTripId(1L);
 
         String uuid = "a1b2c3d4e5f6g7h8i9";
-        Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
-        Reservation actualCreateddReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
-        Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
+        Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789");
+        Reservation actualCreateddReservation = new Reservation(trip1, "John Doe", "123456789");
+        Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321");
         
         actualCreateddReservation.setReservationId(1L);
+        actualCreateddReservation.setUuid(uuid);
         actualReservationUpdate.setReservationId(1L);
+        actualReservationUpdate.setUuid(uuid);
 
         Mockito.when(reservationRepository.save(actualReservation)).thenReturn(actualCreateddReservation);
         Mockito.when(reservationRepository.save(actualReservationUpdate)).thenReturn(actualReservationUpdate);
@@ -210,12 +224,14 @@ class ReservationService_UnitTest {
         trip1.setTripId(1L);
 
         String uuid = "a1b2c3d4e5f6g7h8i9";
-        Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
-        Reservation actualCreatedReservation = new Reservation(trip1, "John Doe", "123456789", uuid);
-        Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321", uuid);
+        Reservation actualReservation = new Reservation(trip1, "John Doe", "123456789");
+        Reservation actualCreatedReservation = new Reservation(trip1, "John Doe", "123456789");
+        Reservation actualReservationUpdate = new Reservation(trip1, "Jane Doe", "987654321");
         
         actualCreatedReservation.setReservationId(1L);
+        actualCreatedReservation.setUuid(uuid);
         actualReservationUpdate.setReservationId(-1L);
+        actualReservationUpdate.setUuid(uuid);
 
         Mockito.when(reservationRepository.save(actualReservation)).thenReturn(actualCreatedReservation);
         Mockito.when(reservationRepository.save(actualReservationUpdate)).thenReturn(actualReservationUpdate);
@@ -243,8 +259,9 @@ class ReservationService_UnitTest {
 
         trip1.setTripId(1L);
 
-        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789", "a1b2c3d4e5f6g7h8i9");
+        Reservation actualRes = new Reservation(trip1, "John Doe", "123456789");
         actualRes.setReservationId(1L);
+        actualRes.setUuid("a1b2c3d4e5f6g7h8i9");
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             reservationManagerService.createReservation(actualRes);
@@ -268,9 +285,10 @@ class ReservationService_UnitTest {
         trip1.setTripId(1L);
 
         String uuid = "a1b2c3d4e5f6g7h8i9";
-        Reservation reservation = new Reservation(trip1, "John Doe", "123456789", uuid);
+        Reservation reservation = new Reservation(trip1, "John Doe", "123456789");
 
         reservation.setReservationId(1L);
+        reservation.setUuid(uuid);
 
         Reservation found = reservationManagerService.getReservationByUuid(uuid).orElse(null);
 

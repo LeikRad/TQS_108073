@@ -42,7 +42,8 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        reservation.setUuid(UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 
         // when
@@ -77,10 +78,14 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
 
-        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
-        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321", UUID.randomUUID().toString());
-        Reservation reservation3 = new Reservation(trip, "John Smith", "123456789", UUID.randomUUID().toString());
+        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321");
+        Reservation reservation3 = new Reservation(trip, "John Smith", "123456789");
         
+        reservation1.setUuid(UUID.randomUUID().toString());
+        reservation2.setUuid(UUID.randomUUID().toString());
+        reservation3.setUuid(UUID.randomUUID().toString());
+
         entityManager.persist(reservation1);
         entityManager.persist(reservation2);
         entityManager.persist(reservation3);
@@ -95,7 +100,7 @@ class ReservationRepositoryTest {
         assertThat(allReservations).hasSize(3).extracting(Reservation::getPersonName).containsOnly(reservation1.getPersonName(), reservation2.getPersonName(), reservation3.getPersonName());
         assertThat(allReservations).hasSize(3).extracting(Reservation::getPhoneNumber).containsOnly(reservation1.getPhoneNumber(), reservation2.getPhoneNumber(), reservation3.getPhoneNumber());
         assertThat(allReservations).hasSize(3).extracting(Reservation::getReservationId).containsOnly(reservation1.getReservationId(), reservation2.getReservationId(), reservation3.getReservationId());
-        assertThat(allReservations).hasSize(3).extracting(Reservation::getReservationId).doesNotHaveDuplicates();
+        assertThat(allReservations).hasSize(3).extracting(Reservation::getUuid).doesNotHaveDuplicates();
     }
 
     @Test
@@ -114,7 +119,8 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        reservation.setUuid(UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 
         // when
@@ -176,7 +182,8 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789", UUID.randomUUID().toString());
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        reservation.setUuid(UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 
         // when

@@ -25,12 +25,22 @@ public class Reservation {
     private String personName;
 
     @Column(name = "phone_number")
-    @NotNull
-    @NonNull
     private String phoneNumber;
 
     @Column(name = "uuid")
     @NotNull
-    @NonNull
     private String uuid;
+
+    public Reservation(Trip trip, String personName, String phoneNumber) {
+        this.trip = trip;
+        this.personName = personName;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Reservation(Trip trip, String personName, String phoneNumber, String uuid) {
+        this.trip = trip;
+        this.personName = personName;
+        this.phoneNumber = phoneNumber;
+        this.uuid = uuid;
+    }
 }

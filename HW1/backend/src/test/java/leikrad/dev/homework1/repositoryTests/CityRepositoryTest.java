@@ -24,7 +24,7 @@ class CityRepositoryTest {
 
     @Test
     @DisplayName("Valid ID should return city")
-    void whenFindById_thenReturnCity() {
+    void whenFindByCityId_thenReturnCity() {
         // given
         City city = new City("Lisbon");
         entityManager.persistAndFlush(city);
@@ -67,15 +67,48 @@ class CityRepositoryTest {
 
     @Test
     @DisplayName("Delete city by ID")
-    void whenDeleteById_thenShouldDeleteCity() {
+    void whenDeleteByCityId_thenShouldDeleteCity() {
         // given
         City city = new City("Lisbon");
         entityManager.persistAndFlush(city);
 
         // when
         cityRepository.deleteByCityId(city.getCityId());
+        City found = cityRepository.findByCityId(city.getCityId()).orElse(null);
+        
+        // then
+        assertThat(found).isNull();
+    }
+
+    @Test
+    @DisplayName("Create City")
+    void whenCreateCity_thenShouldCreateCity() {
+        // given
+        City city = new City("Lisbon");
+
+        // when
+        City savedCity = cityRepository.save(city);
 
         // then
-        assertThat(cityRepository.findByCityId(city.getCityId())).isEmpty();
+        City found = cityRepository.findByCityId(savedCity.getCityId()).orElse(null);
+
+        assertThat(found).isNotNull().isEqualTo(savedCity);
+    }
+
+    @Test
+    @DisplayName("Update City")
+    void whenUpdateCity_thenShouldUpdateCity() {
+        // given
+        City city = new City("Lisbon");
+        city = cityRepository.save(city);
+
+        // when
+        city.setCityName("Porto");
+        cityRepository.save(city);
+
+        // then
+        City found = cityRepository.findByCityId(city.getCityId()).orElse(null);
+
+        assertThat(found).isNotNull().isEqualTo(city);
     }
 }

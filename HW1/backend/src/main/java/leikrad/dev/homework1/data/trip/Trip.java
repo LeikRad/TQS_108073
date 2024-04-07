@@ -19,28 +19,34 @@ public class Trip {
 
     @ManyToOne
     @JoinColumn(name = "origin_city_id")
-    @NotNull
     @NonNull
+    @NotNull
     private City originCity;
 
     @ManyToOne
     @JoinColumn(name = "destination_city_id")
-    @NotNull
     @NonNull
+    @NotNull
     private City destinationCity;
 
     @Column(name = "derparture_date")
-    @NotNull
     @NonNull
+    @NotNull
     private LocalDateTime departureDate;
 
     @Column(name = "arrival_date")
-    @NotNull
-    @NonNull
     private LocalDateTime arrivalDate;
 
     @Column(name = "price")
-    @NotNull
     @NonNull
+    @NotNull
     private Double price;
+
+    public Trip(City originCity, City destinationCity, LocalDateTime departureDate, LocalDateTime arrivalDate, Double price) {
+        this.originCity = originCity;
+        this.destinationCity = destinationCity;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.price = price;
+    }
 }

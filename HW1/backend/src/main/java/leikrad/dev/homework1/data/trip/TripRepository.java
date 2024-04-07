@@ -4,30 +4,22 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.lang.NonNull;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long>{
     
-    public Optional<Trip> findByTripId(Long tripID);
+    public Optional<Trip> findByTripId(Long tripId);
 
     @NonNull
     public List<Trip> findAll();
 
-    public void deleteByTripId(Long tripID);
+    public void deleteByTripId(Long tripId);
 
-    /* These functions have weird names but they're right
-     * The function findByOriginCityCityName is supposed to return all trips that have the origin city with the name cityName
-     * so originCity has a CityName, that leads to CityCity in the function name
-     * DO NOT CHANGE THIS FUNCTION NAME
-     */
+    @Query("SELECT t FROM Trip t WHERE (:originCityName is null or t.originCity.cityName = :originCityName) and (:destinationCityName is null or t.destinationCity.cityName = :destinationCityName)")
     @NonNull
-    public List<Trip> findByOriginCityCityName(String cityName);
-
-    @NonNull
-    public List<Trip> findByDestinationCityCityName(String cityName);
-
-    @NonNull
-    public List<Trip> findByOriginCityCityNameAndDestinationCityCityName(String originCityName, String destinationCityName);
+    public List<Trip> findTripsByCities(@Param("originCityName") String originCityName, @Param("destinationCityName") String destinationCityName);
 }

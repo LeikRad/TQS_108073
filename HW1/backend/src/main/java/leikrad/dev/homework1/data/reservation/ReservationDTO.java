@@ -11,4 +11,12 @@ public class ReservationDTO {
     private String personName;
     private String phoneNumber;
     private String uuid;
+
+    public static ReservationDTO fromReservationEntity(Reservation reservation) {
+        return new ReservationDTO(reservation.getReservationId(), TripDTO.fromTripEntity(reservation.getTrip()), reservation.getPersonName(), reservation.getPhoneNumber(), reservation.getUuid());
+    }
+
+    public Reservation toReservationEntity() {
+        return new Reservation(trip.toTripEntity(), personName, phoneNumber, uuid);
+    }
 }

@@ -41,7 +41,8 @@ public class CurrencyManagerService {
         try {
             refreshCurrencies();
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error("Error refreshing currencies: {}", e.getMessage());
+            return new ArrayList<>();
         }
         return currencyRepository.findAll();
     }
@@ -50,7 +51,8 @@ public class CurrencyManagerService {
         try {
             refreshCurrencies();
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error("Error refreshing currencies: {}", e.getMessage());
+            return Optional.empty();
         }
         return currencyRepository.findById(code);
     }

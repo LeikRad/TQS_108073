@@ -89,16 +89,6 @@
 			    <groupId>org.jacoco</groupId>
 			    <artifactId>jacoco-maven-plugin</artifactId>
 			    <version>0.8.11</version>
-				<configuration>
-					<excludes>
-						<exclude>**/data/city/City.java</exclude>
-						<exclude>**/data/city/CityDTO.java</exclude>
-						<exclude>**/data/trip/Trip.java</exclude>
-						<exclude>**/data/trip/TripDTO.java</exclude>
-						<exclude>**/data/reservation/Reservation.java</exclude>
-						<exclude>**/data/reservation/ReservationDTO.java</exclude>
-					</excludes>
-				</configuration>
 			    <executions>
 			        <execution>
 			            <goals>

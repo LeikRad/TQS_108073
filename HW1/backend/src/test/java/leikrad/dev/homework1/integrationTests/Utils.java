@@ -22,8 +22,8 @@ public class Utils {
         return tripRepository.save(trip);
     }
 
-    static Reservation createTestReservation(ReservationRepository reservationRepository, Trip trip, String name, String phone) {
-        Reservation reservation = new Reservation(trip, name, phone);
+    static Reservation createTestReservation(ReservationRepository reservationRepository, Trip trip, String name, String phone, Double payed, String currencyCode) {
+        Reservation reservation = new Reservation(trip, name, phone, currencyCode, payed);
         reservation.setUuid(UUID.randomUUID().toString());
         return reservationRepository.save(reservation);
     }

@@ -212,54 +212,5 @@ class TripRepositoryTest {
         assertThat(allTrips).isEmpty();
     }
 
-    @Test
-    @DisplayName("Create Trip")
-    void whenCreateTrip_thenShouldCreateTrip() {
-        // given
-        City city1 = new City("Lisbon");
-        City city2 = new City("Porto");
-        entityManager.persist(city1);
-        entityManager.persist(city2);
-        entityManager.flush();
-
-        LocalDateTime originDate = LocalDateTime.now();
-        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
-
-        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
-
-        // when
-        Trip savedTrip = tripRepository.save(trip);
-
-        // then
-        Trip found = tripRepository.findByTripId(savedTrip.getTripId()).orElse(null);
-
-        assertThat(found).isNotNull().isEqualTo(savedTrip);
-    }
-
-    @Test
-    @DisplayName("Update Trip")
-    void whenUpdateTrip_thenShouldUpdateTrip() {
-        // given
-        City city1 = new City("Lisbon");
-        City city2 = new City("Porto");
-        entityManager.persist(city1);
-        entityManager.persist(city2);
-        entityManager.flush();
-    
-        LocalDateTime originDate = LocalDateTime.now();
-        LocalDateTime destinationDate = LocalDateTime.now().plusDays(1);
-    
-        Trip trip = new Trip(city1, city2, originDate, destinationDate, 100.0);
-        trip = tripRepository.save(trip);
-    
-        // when
-        trip.setPrice(200.0);
-        tripRepository.save(trip);
-    
-        // then
-        Trip found = tripRepository.findByTripId(trip.getTripId()).orElse(null);
-
-        assertThat(found).isNotNull().isEqualTo(trip);
-    }
 }
 

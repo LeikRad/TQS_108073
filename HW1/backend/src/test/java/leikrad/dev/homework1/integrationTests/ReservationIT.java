@@ -65,7 +65,10 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", "EUR", 300.0);
+
+        reservation.setCurrencyCode("EUR");
+        reservation.setPayed(300.0);
 
         ResponseEntity<Reservation> response = restTemplate.postForEntity("/api/reservation", reservation,
                 Reservation.class);
@@ -90,7 +93,7 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", "EUR", 300.0);
 
         reservation.setReservationId(1L);
 
@@ -111,9 +114,9 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation1 = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789");
-        Reservation reservation2 = Utils.createTestReservation(reservationRepository, trip, "Jane Doe", "987654321");
-        Reservation reservation3 = Utils.createTestReservation(reservationRepository, trip, "John Smith", "123456789");
+        Reservation reservation1 = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 250.0, "EUR");
+        Reservation reservation2 = Utils.createTestReservation(reservationRepository, trip, "Jane Doe", "987654321", 300.0, "EUR");
+        Reservation reservation3 = Utils.createTestReservation(reservationRepository, trip, "John Smith", "123456789", 240.0, "USD");
 
         ResponseEntity<List<Reservation>> response = restTemplate.exchange("/api/reservation", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Reservation>>() {
@@ -139,7 +142,7 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789");
+        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 300.0, "EUR");
 
         ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservation/" + reservation.getReservationId(), Reservation.class);
 
@@ -169,7 +172,7 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789");
+        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 300.0, "EUR");
 
         restTemplate.delete("/api/reservation/" + reservation.getReservationId());
 
@@ -197,7 +200,7 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789");
+        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 210.0, "USD");
 
         reservation.setPersonName("Jane Doe");
 
@@ -219,7 +222,7 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", "USD", 210.0);
 
         reservation.setReservationId(-1L);
 
@@ -239,7 +242,7 @@ class ReservationIT {
         
         Trip trip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789");
+        Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 120.0, "USD");
 
         ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservation/uuid/" + reservation.getUuid(), Reservation.class);
 

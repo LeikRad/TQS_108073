@@ -25,6 +25,7 @@ replay_pid*
 
 # vscode
 .vscode
+.env
 
 # intellij
 .idea

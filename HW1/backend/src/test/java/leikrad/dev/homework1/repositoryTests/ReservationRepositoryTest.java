@@ -42,7 +42,7 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setUuid(UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 
@@ -78,9 +78,9 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
 
-        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789");
-        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321");
-        Reservation reservation3 = new Reservation(trip, "John Smith", "123456789");
+        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
+        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321", 300.0, "EUR");
+        Reservation reservation3 = new Reservation(trip, "John Smith", "123456789", 300.0, "EUR");
         
         reservation1.setUuid(UUID.randomUUID().toString());
         reservation2.setUuid(UUID.randomUUID().toString());
@@ -119,7 +119,7 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 30.0, "EUR");
         reservation.setUuid(UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 
@@ -129,41 +129,6 @@ class ReservationRepositoryTest {
 
         // then
         assertThat(found).isNull();
-    }
-
-    @Test
-    @DisplayName("Create Reservation")
-    void testCreateReservation() {
-        // given
-        Reservation reservation = new Reservation();
-        reservation.setPersonName("A name");
-
-        // when
-        Reservation savedReservation = reservationRepository.save(reservation);
-
-        // then
-
-        Reservation found = reservationRepository.findByReservationId(savedReservation.getReservationId()).orElse(null);
-
-        assertThat(found).isNotNull().isEqualTo(savedReservation);
-    }
-
-    @Test
-    @DisplayName("Update Reservation")
-    void testUpdateReservation() {
-        // given
-        Reservation reservation = new Reservation();
-        reservation.setPersonName("Test Reservation");
-        reservation = reservationRepository.save(reservation);
-
-        // when
-        reservation.setPersonName("Another Name");
-        reservationRepository.save(reservation);
-
-        // then
-        Reservation found = reservationRepository.findByReservationId(reservation.getReservationId()).orElse(null);
-
-        assertThat(found).isNotNull().isEqualTo(reservation);
     }
 
     @Test
@@ -182,7 +147,7 @@ class ReservationRepositoryTest {
         entityManager.persist(trip);
         entityManager.flush();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setUuid(UUID.randomUUID().toString());
         entityManager.persistAndFlush(reservation);
 

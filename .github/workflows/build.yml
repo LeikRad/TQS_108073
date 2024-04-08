@@ -30,15 +30,13 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Setup DockerCompose for Integration Tests
+        run: docker compose up -d
+        working-directory: ./HW1
       - name: Unit Tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073
-        working-directory: ./HW1/backend
-      - name: Setup DockerCompose for Integration Tests
-        run: docker compose up -d
-        working-directory: ./HW1
-      - name: Integration Tests
-        run: mvn install failsafe:integration-test 
+          API_KEY: ${{ secrets.API_KEY }}
+        run: mvn -B install failsafe:integration-test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073
         working-directory: ./HW1/backend

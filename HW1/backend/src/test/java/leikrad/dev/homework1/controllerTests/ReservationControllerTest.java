@@ -1,6 +1,7 @@
 package leikrad.dev.homework1.controllerTests;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.junit.jupiter.api.DisplayName;
 
@@ -31,9 +32,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import leikrad.dev.homework1.boundary.ReservationController;
+import leikrad.dev.homework1.service.CurrencyManagerService;
 import leikrad.dev.homework1.service.ReservationManagerService;
 import leikrad.dev.homework1.data.trip.*;
 import leikrad.dev.homework1.data.city.*;
+import leikrad.dev.homework1.data.currency.Currency;
 import leikrad.dev.homework1.data.reservation.*;
 
 @WebMvcTest(ReservationController.class)
@@ -45,6 +48,12 @@ class ReservationControllerTest {
     @MockBean
     private ReservationManagerService reservationManagerService;
     
+    @MockBean
+    private CurrencyManagerService currencyManagerService;
+
+    @MockBean
+    private Reservation reservation;
+
     @Test
     @DisplayName("Create Reservation")
     void testCreateReservation() throws Exception{
@@ -58,13 +67,14 @@ class ReservationControllerTest {
 
         String uuid = UUID.randomUUID().toString();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
-        Reservation createdReservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
+        Reservation createdReservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         createdReservation.setReservationId(1L);
         createdReservation.setUuid(uuid);
         
         when(reservationManagerService.createReservation(Mockito.any())).thenReturn(createdReservation);
-
+        when(currencyManagerService.getCurrencyById(Mockito.anyString())).thenReturn(Optional.of(new Currency("EUR", 1.0)));
+        
         mvc.perform(post("/api/reservation")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(reservation)))
@@ -86,10 +96,11 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.createReservation(Mockito.any())).thenThrow(new IllegalArgumentException("Reservation id must be null"));
+        when(currencyManagerService.getCurrencyById(Mockito.anyString())).thenReturn(Optional.of(new Currency("EUR", 1.0)));
 
         mvc.perform(post("/api/reservation")
             .contentType(MediaType.APPLICATION_JSON)
@@ -110,9 +121,9 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789");
-        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321");
-        Reservation reservation3 = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation1 = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
+        Reservation reservation2 = new Reservation(trip, "Jane Doe", "987654321", 300.0, "EUR");
+        Reservation reservation3 = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
 
         List<Reservation> allReservations = List.of(reservation1, reservation2, reservation3);
 
@@ -140,7 +151,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.getReservationDetails(1L)).thenReturn(Optional.of(reservation));
@@ -176,7 +187,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setReservationId(1L);
 
         
@@ -213,7 +224,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.updateReservation(Mockito.any())).thenReturn(reservation);
@@ -238,7 +249,7 @@ class ReservationControllerTest {
         
         Trip trip = new Trip(origin, destination, departureDate, arrivalDate, 200.0);
 
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setReservationId(-1L);
 
         when(reservationManagerService.updateReservation(Mockito.any())).thenThrow(new EntityNotFoundException("Reservation not found"));
@@ -264,7 +275,7 @@ class ReservationControllerTest {
 
         String uuid = UUID.randomUUID().toString();
         
-        Reservation reservation = new Reservation(trip, "John Doe", "123456789");
+        Reservation reservation = new Reservation(trip, "John Doe", "123456789", 300.0, "EUR");
         reservation.setReservationId(1L);
 
         when(reservationManagerService.getReservationByUuid(uuid)).thenReturn(Optional.of(reservation));

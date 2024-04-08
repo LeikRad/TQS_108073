@@ -42,6 +42,14 @@ public class Reservation {
     @NotNull
     private String currencyCode;
 
+    public Reservation(Trip trip, String personName, String phoneNumber, String currencyCode, Double payed) {
+        this.trip = trip;
+        this.personName = personName;
+        this.phoneNumber = phoneNumber;
+        this.currencyCode = currencyCode;
+        this.payed = payed;
+    }
+
     public Reservation(Trip trip, String personName, String phoneNumber, String uuid, Double payed, String currencyCode) {
         this.trip = trip;
         this.personName = personName;

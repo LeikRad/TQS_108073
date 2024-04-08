@@ -25,22 +25,37 @@ public class Reservation {
     private String personName;
 
     @Column(name = "phone_number")
+    @NonNull
     private String phoneNumber;
 
     @Column(name = "uuid")
     @NotNull
     private String uuid;
 
-    public Reservation(Trip trip, String personName, String phoneNumber) {
+    @Column(name = "payed")
+    @NotNull
+    @NonNull
+    private Double payed;
+
+    @Column(name = "currency_code")
+    @NonNull
+    @NotNull
+    private String currencyCode;
+
+    public Reservation(Trip trip, String personName, String phoneNumber, String currencyCode, Double payed) {
         this.trip = trip;
         this.personName = personName;
         this.phoneNumber = phoneNumber;
+        this.currencyCode = currencyCode;
+        this.payed = payed;
     }
 
-    public Reservation(Trip trip, String personName, String phoneNumber, String uuid) {
+    public Reservation(Trip trip, String personName, String phoneNumber, String uuid, Double payed, String currencyCode) {
         this.trip = trip;
         this.personName = personName;
         this.phoneNumber = phoneNumber;
         this.uuid = uuid;
+        this.currencyCode = currencyCode;
+        this.payed = payed;
     }
 }

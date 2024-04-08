@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.persistence.EntityNotFoundException;
+import leikrad.dev.homework1.data.currency.Currency;
 import leikrad.dev.homework1.data.reservation.Reservation;
+import leikrad.dev.homework1.service.CurrencyManagerService;
 import leikrad.dev.homework1.service.ReservationManagerService;
 
 import org.slf4j.Logger;
@@ -26,15 +28,25 @@ import org.slf4j.LoggerFactory;
 public class ReservationController {
 
     private final ReservationManagerService reservationManagerService;
+    private final CurrencyManagerService currencyManagerService;
+    
     private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
-    public ReservationController(ReservationManagerService reservationManagerService) {
+    public ReservationController(ReservationManagerService reservationManagerService, CurrencyManagerService currencyManagerService) {
         this.reservationManagerService = reservationManagerService;
+        this.currencyManagerService = currencyManagerService;
     }
 
     @PostMapping("/reservation")
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         try {
+            Currency conversionRate = currencyManagerService.getCurrencyById(reservation.getCurrencyCode()).orElse(null);
+            if (conversionRate == null) {
+                logger.error("Error creating reservation: Currency code not found");
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            Double payed = reservation.getPayed() * conversionRate.getEurRate();
+            reservation.setPayed(payed);
             Reservation newReservation = reservationManagerService.createReservation(reservation);
             logger.info("Created reservation: {}", newReservation);
             return new ResponseEntity<>(newReservation, HttpStatus.CREATED);

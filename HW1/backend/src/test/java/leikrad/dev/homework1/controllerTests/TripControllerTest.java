@@ -56,7 +56,7 @@ class TripControllerTest {
 
         when(tripManagerService.createTrip(Mockito.any())).thenReturn(trip);
 
-        mvc.perform(post("/api/trip")
+        mvc.perform(post("/api/trips")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(trip)))
             .andExpect(status().isCreated())
@@ -80,7 +80,7 @@ class TripControllerTest {
         
         when(tripManagerService.createTrip(Mockito.any())).thenThrow(new IllegalArgumentException("Trip id must be null"));
 
-        mvc.perform(post("/api/trip")
+        mvc.perform(post("/api/trips")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(trip)))
             .andExpect(status().isBadRequest());
@@ -105,7 +105,7 @@ class TripControllerTest {
 
         when(tripManagerService.getAllTrips()).thenReturn(allTrips);
 
-        mvc.perform(get("/api/trip")
+        mvc.perform(get("/api/trips")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(3)));
@@ -127,7 +127,7 @@ class TripControllerTest {
 
         when(tripManagerService.getTripDetails(Mockito.any())).thenReturn(Optional.of(trip));
 
-        mvc.perform(get("/api/trip/1")
+        mvc.perform(get("/api/trips/1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.originCity.cityName", is("Lisbon")))
@@ -141,7 +141,7 @@ class TripControllerTest {
     void testGetTripByIdNotFound() throws Exception {
         when(tripManagerService.getTripDetails(Mockito.any())).thenReturn(Optional.empty());
 
-        mvc.perform(get("/api/trip/1")
+        mvc.perform(get("/api/trips/1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
 
@@ -162,7 +162,7 @@ class TripControllerTest {
 
         doNothing().when(tripManagerService).deleteTrip(Mockito.any());
 
-        mvc.perform(delete("/api/trip/1")
+        mvc.perform(delete("/api/trips/1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
@@ -174,7 +174,7 @@ class TripControllerTest {
     void testDeleteTripNotFound() throws Exception {
         doThrow(new EntityNotFoundException("Trip not found")).when(tripManagerService).deleteTrip(Mockito.any());
 
-        mvc.perform(delete("/api/trip/1")
+        mvc.perform(delete("/api/trips/1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
 
@@ -195,7 +195,7 @@ class TripControllerTest {
 
         when(tripManagerService.updateTrip(Mockito.any())).thenReturn(trip);
 
-        mvc.perform(put("/api/trip/{id}", trip.getTripId())
+        mvc.perform(put("/api/trips/{id}", trip.getTripId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(trip)))
             .andExpect(status().isOk())
@@ -219,7 +219,7 @@ class TripControllerTest {
 
         when(tripManagerService.updateTrip(Mockito.any())).thenThrow(new EntityNotFoundException("Trip not found"));
 
-        mvc.perform(put("/api/trip/{id}", trip.getTripId())
+        mvc.perform(put("/api/trips/{id}", trip.getTripId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(trip)))
             .andExpect(status().isNotFound());
@@ -244,7 +244,7 @@ class TripControllerTest {
 
         when(tripManagerService.getTripsByOriginAndDestinationCity(Mockito.any(), Mockito.any())).thenReturn(allTrips);
 
-        mvc.perform(get("/api/trip?originCity=Lisbon&destinationCity=Madrid")
+        mvc.perform(get("/api/trips?originCity=Lisbon&destinationCity=Madrid")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(3)));

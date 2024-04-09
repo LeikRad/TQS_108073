@@ -60,10 +60,14 @@ public class CurrencyManagerService {
     private void refreshCurrencies() throws ParseException {
         // check if the currency rates are still in redis
         // if not, make a request to the external API to get the latest currency rates
-        if (currencyRepository.count() > 0) {
+        logger.info("Checking if currency rates are in the database");
+        Currency curr = currencyRepository.findById("EUR").orElse(null);
+        if (curr != null) {
+            logger.info("{}", currencyRepository.count());
             logger.info("Currency rates are already in the database");
             return;
         }
+        logger.info("Currency rates are not in the database");
         // make request to external API to get latest currency rates
         // update the currency rates in the database
 

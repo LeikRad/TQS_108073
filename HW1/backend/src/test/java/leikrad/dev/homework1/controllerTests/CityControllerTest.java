@@ -48,7 +48,7 @@ class CityControllerTest {
 
         when(cityManagerService.createCity(Mockito.any())).thenReturn(city);
 
-        mvc.perform(post("/api/city")
+        mvc.perform(post("/api/cities")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(city)))
             .andExpect(status().isCreated())
@@ -65,7 +65,7 @@ class CityControllerTest {
         
         when(cityManagerService.createCity(Mockito.any())).thenThrow(new IllegalArgumentException("City id must be null"));
 
-        mvc.perform(post("/api/city")
+        mvc.perform(post("/api/cities")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(city)))
             .andExpect(status().isBadRequest());
@@ -84,7 +84,7 @@ class CityControllerTest {
 
         when(cityManagerService.getAllCities()).thenReturn(allCities);
 
-        mvc.perform(get("/api/city")
+        mvc.perform(get("/api/cities")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(3)))
@@ -103,7 +103,7 @@ class CityControllerTest {
 
         when(cityManagerService.getCityDetails(city.getCityId())).thenReturn(Optional.of(city));
 
-        mvc.perform(get("/api/city/{id}", city.getCityId())
+        mvc.perform(get("/api/cities/{id}", city.getCityId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.cityName", is(city.getCityName())));
@@ -116,7 +116,7 @@ class CityControllerTest {
     void testGetCityByIdWithInvalidId() throws Exception {
         when(cityManagerService.getCityDetails(-1L)).thenReturn(Optional.empty());
 
-        mvc.perform(get("/api/city/{id}", -1)
+        mvc.perform(get("/api/cities/{id}", -1)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
 
@@ -132,7 +132,7 @@ class CityControllerTest {
         
         doNothing().when(cityManagerService).deleteCity(city.getCityId());
 
-        mvc.perform(delete("/api/city/{id}", city.getCityId())
+        mvc.perform(delete("/api/cities/{id}", city.getCityId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
         
@@ -145,7 +145,7 @@ class CityControllerTest {
         
         doThrow(new EntityNotFoundException("City not found")).when(cityManagerService).deleteCity(-1L);
 
-        mvc.perform(delete("/api/city/{id}", -1)
+        mvc.perform(delete("/api/cities/{id}", -1)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
         
@@ -160,7 +160,7 @@ class CityControllerTest {
 
         when(cityManagerService.updateCity(Mockito.any())).thenReturn(city);
 
-        mvc.perform(put("/api/city/{id}", city.getCityId())
+        mvc.perform(put("/api/cities/{id}", city.getCityId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(city)))
             .andExpect(status().isOk())
@@ -177,7 +177,7 @@ class CityControllerTest {
 
         when(cityManagerService.updateCity(Mockito.any())).thenThrow(new EntityNotFoundException("City not found"));
 
-        mvc.perform(put("/api/city/{id}", city.getCityId())
+        mvc.perform(put("/api/cities/{id}", city.getCityId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(city)))
             .andExpect(status().isNotFound());

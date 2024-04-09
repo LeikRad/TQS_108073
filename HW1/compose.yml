@@ -9,14 +9,93 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+    restart: unless-stopped
+
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
     volumes:
       - data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+    restart: unless-stopped
+  
+  web:
+    build: 
+      context: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - node_modules:/web_app/node_modules
+      - ./frontend:/web_app
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  api:
+    build: 
+      context: backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.application.name":"homework1",
+        "spring.datasource.url":"jdbc:postgresql://db_postgres:5432/postgres",
+        "spring.datasource.username":"postgres",
+        "spring.datasource.password":"postgres",
+        "spring.datasource.driver-class-name":"org.postgresql.Driver",
+        "spring.jpa.hibernate.ddl-auto":"update",
+        "api.key":"${API_KEY}",
+        "redis.host":"redis"
+        }'
+    depends_on:
+      db_postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+
+  proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./proxy/locations.conf:/etc/nginx/conf.d/locations.conf:ro
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - web
+      - api
+  
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
 
 volumes:
   data:
     driver: local 
+  node_modules:
+    driver: local
   

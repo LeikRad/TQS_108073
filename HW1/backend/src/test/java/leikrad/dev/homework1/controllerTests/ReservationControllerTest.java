@@ -75,7 +75,7 @@ class ReservationControllerTest {
         when(reservationManagerService.createReservation(Mockito.any())).thenReturn(createdReservation);
         when(currencyManagerService.getCurrencyById(Mockito.anyString())).thenReturn(Optional.of(new Currency("EUR", 1.0)));
         
-        mvc.perform(post("/api/reservation")
+        mvc.perform(post("/api/reservations")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(reservation)))
             .andExpect(status().isCreated())
@@ -102,7 +102,7 @@ class ReservationControllerTest {
         when(reservationManagerService.createReservation(Mockito.any())).thenThrow(new IllegalArgumentException("Reservation id must be null"));
         when(currencyManagerService.getCurrencyById(Mockito.anyString())).thenReturn(Optional.of(new Currency("EUR", 1.0)));
 
-        mvc.perform(post("/api/reservation")
+        mvc.perform(post("/api/reservations")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(reservation)))
             .andExpect(status().isBadRequest());
@@ -129,7 +129,7 @@ class ReservationControllerTest {
 
         when(reservationManagerService.getAllReservations()).thenReturn(allReservations);
 
-        mvc.perform(get("/api/reservation")
+        mvc.perform(get("/api/reservations")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(3)))
@@ -156,7 +156,7 @@ class ReservationControllerTest {
 
         when(reservationManagerService.getReservationDetails(1L)).thenReturn(Optional.of(reservation));
 
-        mvc.perform(get("/api/reservation/1")
+        mvc.perform(get("/api/reservations/1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.personName", is(reservation.getPersonName())));
@@ -169,7 +169,7 @@ class ReservationControllerTest {
     void testGetReservationByIdWithInvalidId() throws Exception {
         when(reservationManagerService.getReservationDetails(-1L)).thenReturn(Optional.empty());
 
-        mvc.perform(get("/api/reservation/-1")
+        mvc.perform(get("/api/reservations/-1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
 
@@ -193,7 +193,7 @@ class ReservationControllerTest {
         
         doNothing().when(reservationManagerService).deleteReservation(1L);
 
-        mvc.perform(delete("/api/reservation/1")
+        mvc.perform(delete("/api/reservations/1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
         
@@ -206,7 +206,7 @@ class ReservationControllerTest {
         
         doThrow(new EntityNotFoundException("Reservation not found")).when(reservationManagerService).deleteReservation(-1L);
 
-        mvc.perform(delete("/api/reservation/-1")
+        mvc.perform(delete("/api/reservations/-1")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
         
@@ -229,7 +229,7 @@ class ReservationControllerTest {
 
         when(reservationManagerService.updateReservation(Mockito.any())).thenReturn(reservation);
 
-        mvc.perform(put("/api/reservation/1")
+        mvc.perform(put("/api/reservations/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(reservation)))
             .andExpect(status().isOk())
@@ -254,7 +254,7 @@ class ReservationControllerTest {
 
         when(reservationManagerService.updateReservation(Mockito.any())).thenThrow(new EntityNotFoundException("Reservation not found"));
 
-        mvc.perform(put("/api/reservation/-1")
+        mvc.perform(put("/api/reservations/-1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtils.toJson(reservation)))
             .andExpect(status().isNotFound());
@@ -280,7 +280,7 @@ class ReservationControllerTest {
 
         when(reservationManagerService.getReservationByUuid(uuid)).thenReturn(Optional.of(reservation));
 
-        mvc.perform(get("/api/reservation/uuid/" + uuid)
+        mvc.perform(get("/api/reservations/uuid/" + uuid)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.personName", is(reservation.getPersonName())));
@@ -295,7 +295,7 @@ class ReservationControllerTest {
         
         when(reservationManagerService.getReservationByUuid(uuid)).thenReturn(Optional.empty());
 
-        mvc.perform(get("/api/reservation/uuid/" + uuid)
+        mvc.perform(get("/api/reservations/uuid/" + uuid)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
 

@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cities")
 public class CityController {
 
     private final CityManagerService cityManagerService;
@@ -31,7 +31,7 @@ public class CityController {
         this.cityManagerService = cityManagerService;
     }
 
-    @PostMapping("/city")
+    @PostMapping("")
     public ResponseEntity<City> createCity(@RequestBody City city) {
         try {
             City newCity = cityManagerService.createCity(city);
@@ -43,14 +43,14 @@ public class CityController {
         }
     }
 
-    @GetMapping("/city")
+    @GetMapping("")
     public ResponseEntity<List<City>> getAllCities() {
         List<City> cities = cityManagerService.getAllCities();
         logger.info("Retrieved all cities");
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
-    @GetMapping("/city/{cityId}")
+    @GetMapping("/{cityId}")
     public ResponseEntity<City> getCityDetails(@PathVariable Long cityId) {
         logger.info("Retrieved city details for cityId: {}", cityId);
         return cityManagerService.getCityDetails(cityId)
@@ -58,7 +58,7 @@ public class CityController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/city/{cityId}")
+    @DeleteMapping("/{cityId}")
     public ResponseEntity<Void> deleteCity(@PathVariable Long cityId) {
         try {
             cityManagerService.deleteCity(cityId);
@@ -70,7 +70,7 @@ public class CityController {
         }
     }
 
-    @PutMapping("/city/{cityId}")
+    @PutMapping("/{cityId}")
     public ResponseEntity<City> updateCity(@PathVariable Long cityId, @RequestBody City city) {
         try {
             city.setCityId(cityId);

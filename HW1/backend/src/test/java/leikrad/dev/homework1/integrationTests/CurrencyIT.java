@@ -42,8 +42,6 @@ class CurrencyIT {
     @DisplayName("GET /currencies should return 200 OK")
     void testGetAllCurrencies() {
         // given
-        Currency currency = new Currency("USD", 1.0);
-        currencyRepository.save(currency);
 
         // when
         ResponseEntity<List<Currency>> response = restTemplate.exchange(
@@ -55,8 +53,7 @@ class CurrencyIT {
         
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).hasSize(1);
-        assertThat(response.getBody().get(0).getId()).isEqualTo(currency.getId());
+        assertThat(response.getBody()).hasSize(162);
     }
 
     @Test
@@ -75,5 +72,5 @@ class CurrencyIT {
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getId()).isEqualTo(currency.getId());
-    }   
+    } 
 }

@@ -15,20 +15,14 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
-      - name: Clean dockers just in case
-        run: docker compose down -v
-        working-directory: ./HW1
+      - uses: browser-actions/setup-chrome@latest
+        run: chrome --version
       - name: Setup DockerCompose for Integration Tests
         run: docker compose up -d
         working-directory: ./HW1
       - name: Acceptance Test
-        run: mvn -B test -fae
-        working-directory: ./HW1/acceptance_test
-      - name: Print logs of API
-        if: failure()
-        run: docker compose logs
-        working-directory: ./HW1
-      
+        run: mvn -B clean test -fae
+        working-directory: ./HW1/acceptance_test      
       - name: Clean dockers just in case v2
         run: docker compose down -v
         working-directory: ./HW1

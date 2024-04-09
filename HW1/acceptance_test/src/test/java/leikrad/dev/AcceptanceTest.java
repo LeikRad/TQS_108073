@@ -8,15 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.net.URI;
-import java.net.URL;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import org.openqa.selenium.JavascriptExecutor;
 import java.util.*;
@@ -29,21 +25,16 @@ class AcceptanceTest {
     
     @Test
     void interactiveTest() {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("firefox");
-        URL url = null;
-        try {
-            URI uri = new URI("http://localhost:4444/wd/hub");
-            url = uri.toURL();
-        } catch (Exception e) {
-            assertThat(false).isTrue();
-        }
-        WebDriver driver = new RemoteWebDriver(url, capabilities);
-
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+        ChromeDriver driver = new ChromeDriver(options);
+        
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
 
-        driver.get("http://proxy/");
+        driver.get("http://localhost/");
 
         driver.manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(3));
 

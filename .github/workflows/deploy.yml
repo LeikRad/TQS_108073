@@ -18,8 +18,6 @@ jobs:
       - name: Setup DockerCompose for Integration Tests
         run: docker compose up -d
         working-directory: ./HW1
-      - name: Sleep for dockers to get ready
-        run: sleep 10
       - name: Acceptance Test
         run: mvn -B test -fae
         working-directory: ./HW1/acceptance_test

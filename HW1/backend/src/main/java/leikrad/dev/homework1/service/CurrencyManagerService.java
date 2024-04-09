@@ -33,9 +33,9 @@ public class CurrencyManagerService {
     private CurrencyRepository currencyRepository;
 
     private class ServiceStats {
-        public int cacheHits;
-        public int externalApiRequests;
-        public int totalRequests;
+        private int cacheHits;
+        private int externalApiRequests;
+        private int totalRequests;
 
 
         public ServiceStats() {
@@ -127,8 +127,8 @@ public class CurrencyManagerService {
         for (String key : keys) {
             Currency currency = new Currency();
             double rate;
-            if (obj.get(key) instanceof Long) {
-                rate = ((Long) obj.get(key)).doubleValue();
+            if (obj.get(key) instanceof Long value) {
+                rate = value.doubleValue();
             } else {
                 rate = (double) obj.get(key);
             }

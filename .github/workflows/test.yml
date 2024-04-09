@@ -38,3 +38,6 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
         run: mvn -B install failsafe:integration-test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073 -fae
         working-directory: ./HW1/backend
+      - name: Cleanup Docker containers
+        run: docker compose -f compose.test.yml down --volumes
+        working-directory: ./HW1

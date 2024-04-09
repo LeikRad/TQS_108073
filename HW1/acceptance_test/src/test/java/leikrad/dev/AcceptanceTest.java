@@ -35,7 +35,7 @@ class AcceptanceTest {
         vars = new HashMap<String, Object>();
 
         driver.get("http://localhost/");
-
+        driver.manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
         driver.manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(3));
 
         WebElement cityorigin = driver.findElement(By.id("OriginCity"));

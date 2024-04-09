@@ -19,7 +19,7 @@ jobs:
         run: docker compose down -v
         working-directory: ./HW1
       - name: Setup DockerCompose for Integration Tests
-        run: docker compose up --build -d
+        run: docker compose up -d
         working-directory: ./HW1
       - name: Acceptance Test
         run: mvn -B test -fae

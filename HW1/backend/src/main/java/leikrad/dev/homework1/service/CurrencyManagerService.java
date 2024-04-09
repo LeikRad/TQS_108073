@@ -127,8 +127,8 @@ public class CurrencyManagerService {
         for (String key : keys) {
             Currency currency = new Currency();
             double rate;
-            if (obj.get(key) instanceof Long) {
-                rate = ((Long) obj.get(key)).doubleValue();
+            if (obj.get(key) instanceof Long long) {
+                rate = long.doubleValue();
             } else {
                 rate = (double) obj.get(key);
             }

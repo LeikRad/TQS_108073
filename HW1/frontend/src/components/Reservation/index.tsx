@@ -44,7 +44,7 @@ export default function Reservation() {
 
     return (
         <Dialog>
-            <DialogTrigger>Reservation</DialogTrigger>
+            <DialogTrigger id="resButton">Reservation</DialogTrigger>
             <DialogContent className="max-h-[90%] overflow-auto">
                 <DialogHeader>
                     <DialogTitle>Reservation Search</DialogTitle>
@@ -58,7 +58,12 @@ export default function Reservation() {
                             onChange={handleInputChange}
                         />
                     </div>
-                    <Button onClick={handleButtonClick} disabled={isPending} className="space-x-3">
+                    <Button
+                        id="submitRes"
+                        onClick={handleButtonClick}
+                        disabled={isPending}
+                        className="space-x-3"
+                    >
                         <div>Search</div>
                         {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     </Button>
@@ -66,10 +71,19 @@ export default function Reservation() {
                 {isError && <DialogDescription>{error.message}</DialogDescription>}
                 {data && (
                     <div key={data.uuid} className="space-y-2">
-                        <div>Name: {data.personName}</div>
-                        <div>Phone Number: {data.phoneNumber}</div>
-                        <div>
-                            Payed: {data.payed} {data.currencyCode}
+                        <div className="flex flex-row space-x-2">
+                            <p>Name:</p>
+                            <p id="Name">{data.personName}</p>
+                        </div>
+                        <div className="flex flex-row space-x-2">
+                            <p>Phone Number:</p>
+                            <p id="PhoneNumber">{data.phoneNumber}</p>
+                        </div>
+                        <div className="flex flex-row space-x-2">
+                            <p>Payed:</p>
+                            <p id="Payed">
+                                {data.payed} {data.currencyCode}
+                            </p>
                         </div>
                         <Collapsible
                             open={isTripOpen}
@@ -77,7 +91,10 @@ export default function Reservation() {
                             className="space-y-2"
                         >
                             <CollapsibleTrigger asChild>
-                                <div className="flex items-center w-min rounded hover:cursor-pointer hover:bg-accent">
+                                <div
+                                    id="tripCollapse"
+                                    className="flex items-center w-min rounded hover:cursor-pointer hover:bg-accent"
+                                >
                                     <p>Trip</p>
                                     <ChevronDown
                                         className={`transition ease-in-out duration-500 ${isTripOpen ? '-rotate-180' : ''}`}
@@ -85,11 +102,26 @@ export default function Reservation() {
                                 </div>
                             </CollapsibleTrigger>
                             <CollapsibleContent className="space-y-2">
-                                <div>Origin City: {data.trip.originCity.cityName}</div>
-                                <div>Destination City: {data.trip.destinationCity.cityName}</div>
-                                <div>Departure Date: {data.trip.departureDate}</div>
-                                <div>Arrival Date: {data.trip.arrivalDate}</div>
-                                <div>Original Price: {data.trip.price} EUR</div>
+                                <div className="flex flex-row space-x-2">
+                                    <p>Origin City:</p>
+                                    <p id="OriginCity">{data.trip.originCity.cityName}</p>
+                                </div>
+                                <div className="flex flex-row space-x-2">
+                                    <p>Destination City:</p>
+                                    <p id="DestinationCity">{data.trip.destinationCity.cityName}</p>
+                                </div>
+                                <div className="flex flex-row space-x-2">
+                                    <p>Departure Date:</p>
+                                    <p id="DepartureDate">{data.trip.departureDate}</p>
+                                </div>
+                                <div className="flex flex-row space-x-2">
+                                    <p>Arrival Date:</p>
+                                    <p id="ArrivalDate">{data.trip.arrivalDate}</p>
+                                </div>
+                                <div className="flex flex-row space-x-2">
+                                    <p>Original Price:</p>
+                                    <p id="OriginalPrice">{data.trip.price} EUR</p>
+                                </div>
                             </CollapsibleContent>
                         </Collapsible>
                     </div>

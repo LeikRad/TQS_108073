@@ -106,14 +106,19 @@ export default function FormsModal({ tripData, currency }: TripsProps) {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={isPending}>
+                    <Button type="submit" disabled={isPending} id="submit">
                         Submit
                         {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     </Button>
                 </form>
             </Form>
             {isError && <FormDescription>{error.message}</FormDescription>}
-            {data && <p>Booking successful! Your reservation code is: {data.uuid}</p>}
+            {data && (
+                <div className="flex flex-col">
+                    <p>Booking successful! Your reservation code is: </p>
+                    <p id="uuid">{data.uuid}</p>
+                </div>
+            )}
         </>
     );
 }

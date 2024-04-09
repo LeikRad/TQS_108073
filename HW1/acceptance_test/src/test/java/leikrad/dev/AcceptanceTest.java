@@ -33,7 +33,7 @@ class AcceptanceTest {
         capabilities.setBrowserName("firefox");
         URL url = null;
         try {
-            URI uri = new URI("http://localhost:4444/wd/hub");
+            URI uri = new URI("http://hub:4444/wd/hub");
             url = uri.toURL();
         } catch (Exception e) {
             assertThat(false).isTrue();

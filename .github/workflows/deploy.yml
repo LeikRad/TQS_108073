@@ -16,7 +16,7 @@ jobs:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
       - name: Setup DockerCompose for Integration Tests
-        run: docker compose -f compose.test.yml up -d
+        run: docker compose up --build -d
         working-directory: ./HW1
       - name: Acceptance Test
         run: mvn -B test -fae

@@ -5,19 +5,15 @@ package leikrad.dev;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import java.net.URI;
 import java.net.URL;
 
-import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -47,7 +43,7 @@ class AcceptanceTest {
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
 
-        driver.get("http://172.17.0.1:80");
+        driver.get("http://proxy:80");
 
         driver.manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(3));
 
@@ -112,10 +108,10 @@ class AcceptanceTest {
         String OriginCityText = OriginCity.getText();
         String DestinationCityText = DestinationCity.getText();
 
-        assertThat(DestinationCityText, is("Porto"));
-        assertThat(OriginCityText, is("Lisboa"));
-        assertThat(returnNameText, is("John Doe"));
-        assertThat(returnPhoneText, is("123456789"));
+        assertThat(DestinationCityText).isEqualTo("Porto");
+        assertThat(OriginCityText).isEqualTo("Lisboa");
+        assertThat(returnNameText).isEqualTo("John Doe");
+        assertThat(returnPhoneText).isEqualTo("123456789");
         driver.quit();
     }
 }

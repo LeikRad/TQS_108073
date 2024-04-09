@@ -36,5 +36,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           API_KEY: ${{ secrets.API_KEY }}
-        run: mvn -B install failsafe:integration-test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073
+        run: mvn -B install failsafe:integration-test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=LeikRad_TQS_108073 -fae
         working-directory: ./HW1/backend

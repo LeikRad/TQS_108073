@@ -23,7 +23,7 @@ jobs:
       - name: Start Xvfb
         run: |
           sudo apt-get install -y xvfb
-          Xvfb :99 &
+          Xvfb :99 -screen 0 1920x1080x24 &
           echo "DISPLAY=:99.0" >> $GITHUB_ENV
       - name: Acceptance Test
         run: mvn -B clean test -fae

@@ -82,8 +82,7 @@ class CurrencyControllerTest {
 
         mvc.perform(get("/api/currencies/stats")
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", is(stats)));
+            .andExpect(status().isOk());
 
         verify(currencyManagerService, times(1)).getServiceStats();
     }

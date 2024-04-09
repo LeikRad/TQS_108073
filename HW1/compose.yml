@@ -37,6 +37,7 @@ services:
   web_tqs:
     build: 
       context: frontend
+      image: ghcr.io/leikrad/tqs-web:${TAG:-latest}
     ports:
       - "3000:3000"
     volumes:
@@ -49,6 +50,7 @@ services:
   api_tqs:
     build: 
       context: backend
+      image: ghcr.io/leikrad/api-web:${TAG:-latest}
     ports:
       - "8080:8080"
     environment:

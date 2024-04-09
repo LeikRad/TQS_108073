@@ -9,6 +9,7 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data
+
   redis:
     image: redis:latest
     ports:
@@ -16,7 +17,26 @@ services:
     volumes:
       - data:/data
 
+  web:
+    build: 
+      context: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - node_modules:/web_app/node_modules
+      - ./frontend:/web_app
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  
+networks:
+  frontend:
+    driver: bridge
+
 volumes:
   data:
     driver: local 
+  node_modules:
+    driver: local
   

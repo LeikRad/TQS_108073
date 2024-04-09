@@ -29,3 +29,7 @@ jobs:
         push: true
         files: compose.yml
         workdir: ./HW1
+        set: |
+          *.cache-to=type=gha,scope=cached-stage,mode=max
+          *.cache-from=type=gha,scope=cached-stage
+          *.tags=ghcr.io/LeikRad/tqs_hw1:latest,ghcr.io/LeikRad/tqs_hw1:${{ github.sha }}

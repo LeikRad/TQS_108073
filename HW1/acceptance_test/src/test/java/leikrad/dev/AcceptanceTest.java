@@ -12,6 +12,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
@@ -26,10 +27,7 @@ class AcceptanceTest {
     
     @Test
     void interactiveTest() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        ChromeDriver driver = new ChromeDriver(options);
+        FirefoxDriver driver = new FirefoxDriver();
         
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();

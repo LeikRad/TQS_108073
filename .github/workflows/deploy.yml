@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
-      - uses: browser-actions/setup-chrome@latest
+      - uses: browser-actions/setup-firefox@latest
       - name: Setup DockerCompose for Integration Tests
         run: docker compose up -d
         working-directory: ./HW1

@@ -8,7 +8,7 @@ if (import.meta.env.PROD) {
     HOST = '142.93.36.39';
     BASE_URL = `${scheme.HTTP}${HOST}`;
 } else {
-    HOST = 'localhost:8080';
+    HOST = `${window.location.hostname}`;
     BASE_URL = `${scheme.HTTP}${HOST}`;
 }
 

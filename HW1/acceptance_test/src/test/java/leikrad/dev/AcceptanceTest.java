@@ -43,7 +43,7 @@ class AcceptanceTest {
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
 
-        driver.get("http://proxy:80");
+        driver.get("http://proxy/");
 
         driver.manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(3));
 

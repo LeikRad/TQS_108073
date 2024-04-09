@@ -24,10 +24,11 @@ jobs:
       - name: Acceptance Test
         run: mvn -B test -fae
         working-directory: ./HW1/acceptance_test
-      - name: Print logs
+      - name: Print logs of API
         if: failure()
-        run: docker logs hw1-api_tqs-1
+        run: docker compose logs
         working-directory: ./HW1
+      
       - name: Clean dockers just in case v2
         run: docker compose down -v
         working-directory: ./HW1

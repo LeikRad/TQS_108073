@@ -1,0 +1,11 @@
+# Build stage
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
+WORKDIR /backend
+COPY . .
+RUN mvn clean install -DskipTests
+
+# Package stage
+FROM openjdk:11-jre-slim
+COPY --from=build /backend/target/my-app.jar /usr/local/lib/my-app.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/usr/local/lib/my-app.jar"]

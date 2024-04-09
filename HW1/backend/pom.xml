@@ -110,6 +110,11 @@
 			    <configuration>
      			   <excludes>
      			       <exclude>**/config/*</exclude>
+					   <exclude>**/**DTO*</exclude>
+					   <exclude>**/City.java</exclude>
+					   <exclude>**/Trips.java</exclude>
+					   <exclude>**/Reservation.java</exclude>
+					   <exclude>**/Currency.java</exclude>
      			   </excludes>
      			</configuration>
 			    <executions>

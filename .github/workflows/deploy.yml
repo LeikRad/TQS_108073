@@ -23,7 +23,7 @@ jobs:
       working-directory: ./HW1
       run: |
         docker compose -f compose.prod.yml pull
-        docker compose -f compose.prod.yml up FLAGS="-d --remove-orphans"
+        docker compose -f compose.prod.yml up -d --remove-orphans
         docker container prune -f
         docker image prune -af
         docker builder prune

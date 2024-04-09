@@ -38,4 +38,11 @@ public class CurrencyController {
                 .map(currency -> new ResponseEntity<>(currency, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @GetMapping("/stats")
+    public ResponseEntity<String> getServiceStats() {
+        String stats = currencyService.getServiceStats();
+        logger.info("Retrieved service stats");
+        return new ResponseEntity<>(stats, HttpStatus.OK);
+    }
 }

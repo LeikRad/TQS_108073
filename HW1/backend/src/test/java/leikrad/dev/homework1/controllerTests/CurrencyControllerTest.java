@@ -72,4 +72,19 @@ class CurrencyControllerTest {
 
         verify(currencyManagerService, times(1)).getCurrencyById("EUR");
     }
+
+    @Test
+    @DisplayName("Get service stats")
+    void testGetServiceStats() throws Exception {
+        String stats = "{ \"cacheHits\": 0, \"externalApiRequests\": 0, \"totalRequests\": 0 }";
+
+        when(currencyManagerService.getServiceStats()).thenReturn(stats);
+
+        mvc.perform(get("/api/currencies/stats")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", is(stats)));
+
+        verify(currencyManagerService, times(1)).getServiceStats();
+    }
 }

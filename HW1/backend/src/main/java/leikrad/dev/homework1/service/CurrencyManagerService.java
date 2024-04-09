@@ -32,6 +32,37 @@ public class CurrencyManagerService {
 
     private CurrencyRepository currencyRepository;
 
+    private class ServiceStats {
+        public int cacheHits;
+        public int externalApiRequests;
+        public int totalRequests;
+
+
+        public ServiceStats() {
+            cacheHits = 0;
+            externalApiRequests = 0;
+            totalRequests = 0;
+        }
+
+        public void incrementCacheHits() {
+            cacheHits++;
+        }
+
+        public void incrementCacheMisses() {
+            externalApiRequests++;
+        }
+
+        public void incrementTotalRequests() {
+            totalRequests++;
+        }
+
+        public String toString() {
+            return "{ \"cacheHits\": " + cacheHits + ", \"externalApiRequests\": " + externalApiRequests + ", \"totalRequests\": " + totalRequests + " }";
+        }
+    }
+
+    private ServiceStats serviceStats = new ServiceStats();
+
     public CurrencyManagerService(CurrencyRepository currencyRepository, RestTemplateBuilder restTemplateBuilder) {
         this.currencyRepository = currencyRepository;
         this.restTemplate = restTemplateBuilder.build();
@@ -57,7 +88,12 @@ public class CurrencyManagerService {
         return currencyRepository.findById(code);
     }
     
+    public String getServiceStats() {
+        return serviceStats.toString();
+    }
+
     private void refreshCurrencies() throws ParseException {
+        serviceStats.incrementTotalRequests();
         // check if the currency rates are still in redis
         // if not, make a request to the external API to get the latest currency rates
         logger.info("Checking if currency rates are in the database");
@@ -65,8 +101,10 @@ public class CurrencyManagerService {
         if (curr != null) {
             logger.info("{}", currencyRepository.count());
             logger.info("Currency rates are already in the database");
+            serviceStats.incrementCacheHits();
             return;
         }
+        serviceStats.incrementCacheMisses();
         logger.info("Currency rates are not in the database");
         // make request to external API to get latest currency rates
         // update the currency rates in the database

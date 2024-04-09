@@ -73,4 +73,21 @@ class CurrencyIT {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getId()).isEqualTo(currency.getId());
     } 
+
+    @Test
+    @DisplayName("GET /currencies/stats should return 200 OK")
+    void testGetServiceStats() {
+        // given
+
+        // when
+        ResponseEntity<String> response = restTemplate.exchange(
+            "/api/currencies/stats",
+            HttpMethod.GET,
+            null,
+            String.class
+        );
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 }

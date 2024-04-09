@@ -10,7 +10,10 @@ const NavBar = () => {
                 <Link to="/">
                     <div className="flex space-x-4 items-center">
                         <BusFront size={32} />
-                        <p className="font-bold">Bus Company</p>
+                        <div className="flex flex-col">
+                            <p className="font-bold">Bus Company (Not Transdev)</p>
+                            <p className="text-sm italic">Our busses arrive on time</p>
+                        </div>
                     </div>
                 </Link>
             </div>

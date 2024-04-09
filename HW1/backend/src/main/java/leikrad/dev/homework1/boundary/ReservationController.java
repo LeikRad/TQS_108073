@@ -1,5 +1,7 @@
 package leikrad.dev.homework1.boundary;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,9 @@ public class ReservationController {
                 logger.error("Error creating reservation: Currency code not found");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            Double payed = reservation.getPayed() * conversionRate.getEurRate();
+            Double payed = BigDecimal.valueOf(reservation.getPayed() * conversionRate.getEurRate())
+                          .setScale(2, RoundingMode.HALF_UP)
+                          .doubleValue();
             reservation.setPayed(payed);
             Reservation newReservation = reservationManagerService.createReservation(reservation);
             logger.info("Created reservation: {}", newReservation);

@@ -28,6 +28,7 @@ interface TripsProps {
 }
 
 export default function TripCard({ tripData, currency, eurRate }: TripsProps) {
+    console.log(tripData);
     return (
         <Card className="w-6/12">
             <CardHeader>

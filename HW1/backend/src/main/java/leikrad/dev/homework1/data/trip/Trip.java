@@ -29,7 +29,7 @@ public class Trip {
     @NotNull
     private City destinationCity;
 
-    @Column(name = "derparture_date")
+    @Column(name = "departure_date")
     @NonNull
     @NotNull
     private LocalDateTime departureDate;

@@ -10,17 +10,14 @@ import { Input } from '@/components/ui/input';
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ChevronDown } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronUp, ChevronDown } from 'lucide-react';
 import config from '@/config';
 
 export default function Reservation() {
     const [resCode, setResCode] = useState('');
 
     const [isTripOpen, setTripIsOpen] = useState(false);
-    const [isOrigCityOpen, setOrigCityIsOpen] = useState(false);
-    const [isArrivCityOpen, setArrivCityIsOpen] = useState(false);
 
     const fetchTodoList = async (uuid: string) => {
         const response = await fetch(`${config.API_URL}reservations/uuid/${uuid}`);

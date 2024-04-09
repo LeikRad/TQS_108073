@@ -1,11 +1,4 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
     Dialog,
@@ -18,7 +11,6 @@ import {
 
 import { TripInterface } from '@/interfaces';
 import { Button } from '../ui/button';
-import { useMutation } from '@tanstack/react-query';
 import FormsModal from './FormsModal';
 
 interface TripsProps {

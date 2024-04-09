@@ -16,11 +16,6 @@ export default function HomePage() {
     const [currency, setCurrency] = useState('EUR');
     const [eurRate, setEurRate] = useState(1);
 
-    const onSelectOriginCity = (city: string) => {
-        console.log(city);
-        setOriginCity(city);
-    };
-
     const fetchCityList = async () => {
         console.log('Fetching city list');
         const response = await fetch(`${config.API_URL}cities`);
@@ -28,12 +23,7 @@ export default function HomePage() {
         return data;
     };
 
-    const {
-        isLoading: cityIsPending,
-        isError: cityIsError,
-        data: cityData,
-        error: cityError,
-    } = useQuery({
+    const { data: cityData } = useQuery({
         queryKey: ['cities'],
         queryFn: fetchCityList,
     });
@@ -44,12 +34,7 @@ export default function HomePage() {
         return data;
     };
 
-    const {
-        isLoading: currencyIsPending,
-        isError: currencyIsError,
-        data: currencyData,
-        error: currencyError,
-    } = useQuery({
+    const { data: currencyData } = useQuery({
         queryKey: ['currencies'],
         queryFn: fetchCurrencyList,
     });
@@ -70,12 +55,7 @@ export default function HomePage() {
         return data;
     };
 
-    const {
-        isLoading: tripIsPending,
-        isError: tripIsError,
-        data: tripData,
-        error: tripError,
-    } = useQuery({
+    const { data: tripData } = useQuery({
         queryKey: ['trips', originCity, destinationCity],
         queryFn: fetchTripList,
     });

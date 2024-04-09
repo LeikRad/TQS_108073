@@ -64,6 +64,7 @@ export default function HomePage() {
                 ? url.concat(`&destinationCity=${destinationCity}`)
                 : url.concat(`?destinationCity=${destinationCity}`);
         }
+        console.log('Fetching trip list:', url);
         const response = await fetch(url);
         const data = await response.json();
         return data;
@@ -95,6 +96,14 @@ export default function HomePage() {
                                     </SelectTrigger>
                                 </div>
                                 <SelectContent className="max-h-[250px] overflow-auto">
+                                    <SelectItem
+                                        value="All"
+                                        onMouseDown={() => {
+                                            setOriginCity('');
+                                        }}
+                                    >
+                                        All
+                                    </SelectItem>
                                     {cityData?.map((city: any) => (
                                         <SelectItem
                                             value={city.cityId}
@@ -118,6 +127,12 @@ export default function HomePage() {
                                     </SelectTrigger>
                                 </div>
                                 <SelectContent className="max-h-[250px] overflow-auto">
+                                    <SelectItem
+                                        value="All"
+                                        onMouseDown={() => setDestinationCity('')}
+                                    >
+                                        All
+                                    </SelectItem>
                                     {cityData?.map((city: any) => (
                                         <SelectItem
                                             value={city.cityId}

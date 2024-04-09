@@ -46,7 +46,7 @@ public class TripController {
 
     @GetMapping("")
     public ResponseEntity<List<Trip>> getAllTrips(@RequestParam(required = false) String originCity, @RequestParam(required = false) String destinationCity) {
-        if (originCity != null && destinationCity != null) {
+        if (originCity != null || destinationCity != null) {
             try {
                 List<Trip> trips = tripManagerService.getTripsByOriginAndDestinationCity(originCity, destinationCity);
                 logger.info("Retrieved trips by cities: {}", trips);

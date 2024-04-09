@@ -23,7 +23,7 @@ export default function Reservation() {
     const [isArrivCityOpen, setArrivCityIsOpen] = useState(false);
 
     const fetchTodoList = async (uuid: string) => {
-        const response = await fetch(`${config.API_URL}reservations/${uuid}`);
+        const response = await fetch(`${config.API_URL}reservations/uuid/${uuid}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

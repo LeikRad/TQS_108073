@@ -27,7 +27,7 @@ jobs:
       uses: docker/bake-action@v3
       with:
         push: true
-        files: compose.yml
+        files: compose.prod.yml
         workdir: ./HW1
         set: |
           *.cache-to=type=gha,scope=cached-stage,mode=max

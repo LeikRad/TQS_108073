@@ -28,6 +28,7 @@ jobs:
       with:
         push: true
         files: compose.yml
+        workdir: ./HW1
         set: |
           *.cache-to=type=gha,scope=cached-stage,mode=max
           *.cache-from=type=gha,scope=cached-stage

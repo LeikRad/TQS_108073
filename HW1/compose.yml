@@ -34,7 +34,7 @@ services:
       - backend
     restart: unless-stopped
   
-  web:
+  web_tqs:
     build: 
       context: frontend
     ports:
@@ -46,7 +46,7 @@ services:
       - frontend
     restart: unless-stopped
 
-  api:
+  api_tqs:
     build: 
       context: backend
     ports:
@@ -84,8 +84,8 @@ services:
       - backend
     restart: unless-stopped
     depends_on:
-      - web
-      - api
+      - web_tqs
+      - api_tqs
   
 networks:
   frontend:

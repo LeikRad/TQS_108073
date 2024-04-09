@@ -84,10 +84,12 @@ services:
     networks:
       - frontend
       - backend
+      - test
     restart: unless-stopped
     depends_on:
       - web_tqs
       - api_tqs
+
   hub:
     image: selenium/hub:latest
     ports: 
@@ -95,6 +97,9 @@ services:
     environment:
       - GRID_BROWSER_TIMEOUT=300
       - GRID_TIMEOUT=300
+    networks:
+      - test
+      
   firefox:
     image: selenium/node-firefox:latest
     depends_on:
@@ -104,11 +109,14 @@ services:
       - SE_EVENT_BUS_HOST=hub
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-
+    networks:
+      - test
 networks:
   frontend:
     driver: bridge
   backend:
+    driver: bridge
+  test:
     driver: bridge
 
 volumes:

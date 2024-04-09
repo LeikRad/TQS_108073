@@ -32,4 +32,3 @@ jobs:
         set: |
           *.cache-to=type=gha,scope=cached-stage,mode=max
           *.cache-from=type=gha,scope=cached-stage
-          *.tags=ghcr.io/leikrad/tqs_hw1:latest

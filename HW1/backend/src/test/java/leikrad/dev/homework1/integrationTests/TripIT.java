@@ -60,7 +60,7 @@ class TripIT {
         Trip trip = new Trip(origin, destination, dDate, aDate, price);
         
 
-        ResponseEntity<Trip> response = restTemplate.postForEntity("/api/trip", trip,
+        ResponseEntity<Trip> response = restTemplate.postForEntity("/api/trips", trip,
                 Trip.class);
 
         List<Trip> trips = tripRepository.findAll();
@@ -83,7 +83,7 @@ class TripIT {
         Trip trip = new Trip(origin, destination, dDate, aDate, price);
         trip.setTripId(1L);
 
-        ResponseEntity<Trip> response = restTemplate.postForEntity("/api/trip", trip,
+        ResponseEntity<Trip> response = restTemplate.postForEntity("/api/trips", trip,
                 Trip.class);
         
         List<Trip> trips = tripRepository.findAll();
@@ -103,7 +103,7 @@ class TripIT {
         Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
         Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        ResponseEntity<List<Trip>> response = restTemplate.exchange("/api/trip", HttpMethod.GET, null,
+        ResponseEntity<List<Trip>> response = restTemplate.exchange("/api/trips", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Trip>>() {
                 });
 
@@ -128,7 +128,7 @@ class TripIT {
 
         Long id = createdTrip.getTripId();
 
-        String url = "/api/trip/" + id;
+        String url = "/api/trips/" + id;
 
         ResponseEntity<Trip> response = restTemplate.getForEntity(url, Trip.class);
 
@@ -144,7 +144,7 @@ class TripIT {
     @Test
     @DisplayName("Get trip by id not found")
     void testGetTripByIdNotFound() {
-        ResponseEntity<Trip> response = restTemplate.getForEntity("/api/trip/1", Trip.class);
+        ResponseEntity<Trip> response = restTemplate.getForEntity("/api/trips/1", Trip.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -163,7 +163,7 @@ class TripIT {
         Trip trip = new Trip(origin, destination, dDate, aDate, 400.0);
 
         Long id = createdTrip.getTripId();
-        String url = "/api/trip/" + id;
+        String url = "/api/trips/" + id;
 
         restTemplate.put(url, trip);
 
@@ -185,7 +185,7 @@ class TripIT {
 
         HttpEntity<Trip> requestEntity = new HttpEntity<>(trip);
         
-        ResponseEntity<Trip> response = restTemplate.exchange("/api/trip/-1", HttpMethod.PUT, requestEntity, Trip.class);
+        ResponseEntity<Trip> response = restTemplate.exchange("/api/trips/-1", HttpMethod.PUT, requestEntity, Trip.class);
         
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -202,7 +202,7 @@ class TripIT {
         Trip createdTrip = Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
         Long id = createdTrip.getTripId();
-        String url = "/api/trip/" + id;
+        String url = "/api/trips/" + id;
 
         restTemplate.delete(url);
 
@@ -214,7 +214,7 @@ class TripIT {
     void testDeleteTripNotFound() {
         Utils.createTestTrip(tripRepository, Utils.createTestCity(cityRepository, "Lisbon"), Utils.createTestCity(cityRepository, "Porto"), LocalDateTime.now(), LocalDateTime.now().plusDays(1), 300);
 
-        ResponseEntity<Trip> response = restTemplate.exchange("/api/trip/-1", HttpMethod.DELETE, null,
+        ResponseEntity<Trip> response = restTemplate.exchange("/api/trips/-1", HttpMethod.DELETE, null,
                 Trip.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -232,7 +232,7 @@ class TripIT {
         Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
         Utils.createTestTrip(tripRepository, origin, destination, dDate, aDate, price);
 
-        ResponseEntity<List<Trip>> response = restTemplate.exchange("/api/trip?originCity=Lisbon&destinationCity=Porto", HttpMethod.GET, null,
+        ResponseEntity<List<Trip>> response = restTemplate.exchange("/api/trips?originCity=Lisbon&destinationCity=Porto", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Trip>>() {
                 });
 

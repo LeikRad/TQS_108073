@@ -70,7 +70,7 @@ class ReservationIT {
         reservation.setCurrencyCode("EUR");
         reservation.setPayed(300.0);
 
-        ResponseEntity<Reservation> response = restTemplate.postForEntity("/api/reservation", reservation,
+        ResponseEntity<Reservation> response = restTemplate.postForEntity("/api/reservations", reservation,
                 Reservation.class);
 
         List<Reservation> reservations = reservationRepository.findAll();
@@ -97,7 +97,7 @@ class ReservationIT {
 
         reservation.setReservationId(1L);
 
-        ResponseEntity<Reservation> response = restTemplate.postForEntity("/api/reservation", reservation,
+        ResponseEntity<Reservation> response = restTemplate.postForEntity("/api/reservations", reservation,
                 Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -118,7 +118,7 @@ class ReservationIT {
         Reservation reservation2 = Utils.createTestReservation(reservationRepository, trip, "Jane Doe", "987654321", 300.0, "EUR");
         Reservation reservation3 = Utils.createTestReservation(reservationRepository, trip, "John Smith", "123456789", 240.0, "USD");
 
-        ResponseEntity<List<Reservation>> response = restTemplate.exchange("/api/reservation", HttpMethod.GET, null,
+        ResponseEntity<List<Reservation>> response = restTemplate.exchange("/api/reservations", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Reservation>>() {
                 });
 
@@ -144,7 +144,7 @@ class ReservationIT {
 
         Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 300.0, "EUR");
 
-        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservation/" + reservation.getReservationId(), Reservation.class);
+        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservations/" + reservation.getReservationId(), Reservation.class);
 
         Reservation found = response.getBody();
 
@@ -156,7 +156,7 @@ class ReservationIT {
     @Test
     @DisplayName("Get reservation by id not found")
     void testGetReservationByIdNotFound() {
-        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservation/1", Reservation.class);
+        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservations/1", Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -174,7 +174,7 @@ class ReservationIT {
 
         Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 300.0, "EUR");
 
-        restTemplate.delete("/api/reservation/" + reservation.getReservationId());
+        restTemplate.delete("/api/reservations/" + reservation.getReservationId());
 
         List<Reservation> reservations = reservationRepository.findAll();
 
@@ -184,7 +184,7 @@ class ReservationIT {
     @Test
     @DisplayName("Delete reservation not found")
     void testDeleteReservationNotFound() {
-        ResponseEntity<Reservation> response = restTemplate.exchange("/api/reservation/-1", HttpMethod.DELETE, null, Reservation.class);
+        ResponseEntity<Reservation> response = restTemplate.exchange("/api/reservations/-1", HttpMethod.DELETE, null, Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -204,7 +204,7 @@ class ReservationIT {
 
         reservation.setPersonName("Jane Doe");
 
-        restTemplate.put("/api/reservation/" + reservation.getReservationId(), reservation);
+        restTemplate.put("/api/reservations/" + reservation.getReservationId(), reservation);
 
         Reservation updated = reservationRepository.findById(reservation.getReservationId()).get();
 
@@ -226,7 +226,7 @@ class ReservationIT {
 
         reservation.setReservationId(-1L);
 
-        ResponseEntity<Reservation> response = restTemplate.exchange("/api/reservation/-1", HttpMethod.PUT, new HttpEntity<>(reservation), Reservation.class);
+        ResponseEntity<Reservation> response = restTemplate.exchange("/api/reservations/-1", HttpMethod.PUT, new HttpEntity<>(reservation), Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -244,7 +244,7 @@ class ReservationIT {
 
         Reservation reservation = Utils.createTestReservation(reservationRepository, trip, "John Doe", "123456789", 120.0, "USD");
 
-        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservation/uuid/" + reservation.getUuid(), Reservation.class);
+        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservations/uuid/" + reservation.getUuid(), Reservation.class);
 
         Reservation found = response.getBody();
 
@@ -257,7 +257,7 @@ class ReservationIT {
     @Test
     @DisplayName("Get reservation by uuid not found")
     void testGetReservationByUuidNotFound() {
-        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservation/uuid/1", Reservation.class);
+        ResponseEntity<Reservation> response = restTemplate.getForEntity("/api/reservations/uuid/1", Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }

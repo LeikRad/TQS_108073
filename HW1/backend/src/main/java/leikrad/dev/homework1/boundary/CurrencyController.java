@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/currencies")
 public class CurrencyController {
 
     private final CurrencyManagerService currencyService;
@@ -24,14 +24,14 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-    @GetMapping("/currencies")
+    @GetMapping("")
     public ResponseEntity<Iterable<Currency>> getAllCurrencies() {
         Iterable<Currency> currencies = currencyService.getAllCurrencies();
         logger.info("Retrieved all currencies");
         return new ResponseEntity<>(currencies, HttpStatus.OK);
     }
 
-    @GetMapping("/currencies/{currencyId}")
+    @GetMapping("/{currencyId}")
     public ResponseEntity<Currency> getCurrencyById(@PathVariable String currencyId) {
         logger.info("Retrieved currency details for currencyId: {}", currencyId);
         return currencyService.getCurrencyById(currencyId)

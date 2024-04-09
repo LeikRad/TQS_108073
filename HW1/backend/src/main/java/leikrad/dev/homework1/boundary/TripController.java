@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/trips")
 public class TripController {
     
     private final TripManagerService tripManagerService;
@@ -32,7 +32,7 @@ public class TripController {
         this.tripManagerService = tripManagerService;
     }
 
-    @PostMapping("/trip")
+    @PostMapping("")
     public ResponseEntity<Trip> createTrip(@RequestBody Trip trip) {
         try {
             Trip newTrip = tripManagerService.createTrip(trip);
@@ -44,7 +44,7 @@ public class TripController {
         }
     }
 
-    @GetMapping("/trip")
+    @GetMapping("")
     public ResponseEntity<List<Trip>> getAllTrips(@RequestParam(required = false) String originCity, @RequestParam(required = false) String destinationCity) {
         if (originCity != null && destinationCity != null) {
             try {
@@ -67,7 +67,7 @@ public class TripController {
         }
     }
 
-    @GetMapping("/trip/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Trip> getTripById(@PathVariable Long id) {
         logger.info("Retrieved trip with id: {}", id);
         return tripManagerService.getTripDetails(id)
@@ -75,7 +75,7 @@ public class TripController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/trip/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Trip> updateTrip(@PathVariable Long id, @RequestBody Trip trip) {
         try {
             trip.setTripId(id);
@@ -88,7 +88,7 @@ public class TripController {
         }
     }
 
-    @DeleteMapping("/trip/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTrip(@PathVariable Long id) {
         try {
             tripManagerService.deleteTrip(id);

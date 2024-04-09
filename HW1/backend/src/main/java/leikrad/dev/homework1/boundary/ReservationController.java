@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/reservations")
 public class ReservationController {
 
     private final ReservationManagerService reservationManagerService;
@@ -37,7 +37,7 @@ public class ReservationController {
         this.currencyManagerService = currencyManagerService;
     }
 
-    @PostMapping("/reservation")
+    @PostMapping("")
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         try {
             Currency conversionRate = currencyManagerService.getCurrencyById(reservation.getCurrencyCode()).orElse(null);
@@ -56,7 +56,7 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/reservation")
+    @GetMapping("")
     public ResponseEntity<List<Reservation>> getAllReservations() {
         try {
             List<Reservation> reservations = reservationManagerService.getAllReservations();
@@ -68,7 +68,7 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/reservation/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservationById(@PathVariable Long id) {
         logger.info("Retrieved reservation by id: {}", id);
         return reservationManagerService.getReservationDetails(id)
@@ -76,7 +76,7 @@ public class ReservationController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/reservation/uuid/{uuid}")
+    @GetMapping("/uuid/{uuid}")
     public ResponseEntity<Reservation> getReservationByUuid(@PathVariable String uuid) {
         logger.info("Retrieved reservation by uuid: {}", uuid);
         return reservationManagerService.getReservationByUuid(uuid)
@@ -84,7 +84,7 @@ public class ReservationController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/reservation/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Reservation> updateReservation(@PathVariable Long id, @RequestBody Reservation reservation) {
         try {
             reservation.setReservationId(id);
@@ -97,7 +97,7 @@ public class ReservationController {
         }
     }
 
-    @DeleteMapping("/reservation/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteReservation(@PathVariable Long id) {
         try {
             reservationManagerService.deleteReservation(id);

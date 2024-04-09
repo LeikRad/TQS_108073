@@ -45,7 +45,7 @@ class CityIT {
     void testCreateCity() {
         City city = new City("Lisbon");
 
-        ResponseEntity<City> response = restTemplate.postForEntity("/api/city", city,
+        ResponseEntity<City> response = restTemplate.postForEntity("/api/cities", city,
                 City.class);
 
         List<City> cities = cityRepository.findAll();
@@ -60,7 +60,7 @@ class CityIT {
         City city = new City("Lisbon");
         city.setCityId(1L);
 
-        ResponseEntity<City> response = restTemplate.postForEntity("/api/city", city,
+        ResponseEntity<City> response = restTemplate.postForEntity("/api/cities", city,
                 City.class);
         
         List<City> cities = cityRepository.findAll();
@@ -74,7 +74,7 @@ class CityIT {
         Utils.createTestCity(cityRepository,"Lisbon");
         Utils.createTestCity(cityRepository,"Porto");
 
-        ResponseEntity<List<City>> response = restTemplate.exchange("/api/city", HttpMethod.GET, null,
+        ResponseEntity<List<City>> response = restTemplate.exchange("/api/cities", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<City>>() {
                 });
 
@@ -91,7 +91,7 @@ class CityIT {
 
         Long id = createdCity.getCityId();
 
-        String url = "/api/city/" + id;
+        String url = "/api/cities/" + id;
 
         ResponseEntity<City> response = restTemplate.getForEntity(url, City.class);
 
@@ -105,7 +105,7 @@ class CityIT {
     @Test
     @DisplayName("Get city by id not found")
     void testGetCityByIdNotFound() {
-        ResponseEntity<City> response = restTemplate.getForEntity("/api/city/2", City.class);
+        ResponseEntity<City> response = restTemplate.getForEntity("/api/cities/2", City.class);
 
         System.out.println(response);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -119,7 +119,7 @@ class CityIT {
         City city = new City("Porto");
 
         Long id = createdCity.getCityId();
-        String url = "/api/city/" + id;
+        String url = "/api/cities/" + id;
 
         restTemplate.put(url, city);
 
@@ -135,7 +135,7 @@ class CityIT {
 
         HttpEntity<City> requestEntity = new HttpEntity<>(city);
         
-        ResponseEntity<City> response = restTemplate.exchange("/api/city/-1", HttpMethod.PUT, requestEntity, City.class);
+        ResponseEntity<City> response = restTemplate.exchange("/api/cities/-1", HttpMethod.PUT, requestEntity, City.class);
         
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -146,7 +146,7 @@ class CityIT {
         City createdCity = Utils.createTestCity(cityRepository, "Lisbon");
 
         Long id = createdCity.getCityId();
-        String url = "/api/city/" + id;
+        String url = "/api/cities/" + id;
 
         ResponseEntity<City> response = restTemplate.exchange(url, HttpMethod.DELETE, null,
                 City.class);
@@ -162,7 +162,7 @@ class CityIT {
     void testDeleteCityNotFound() {
         Utils.createTestCity(cityRepository, "Lisbon");
 
-        ResponseEntity<City> response = restTemplate.exchange("/api/city/-1", HttpMethod.DELETE, null,
+        ResponseEntity<City> response = restTemplate.exchange("/api/cities/-1", HttpMethod.DELETE, null,
                 City.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

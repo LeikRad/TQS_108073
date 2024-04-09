@@ -23,4 +23,6 @@ const config = {
     API_URL: `${BASE_URL}/api/`,
 };
 
+console.log(import.meta.env);
+
 export default config;

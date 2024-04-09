@@ -44,6 +44,8 @@ services:
     networks:
       - frontend
     restart: always
+    environment:
+      - PROD=true
 
   api_tqs:
     build: 

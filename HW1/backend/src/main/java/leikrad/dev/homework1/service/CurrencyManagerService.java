@@ -33,9 +33,9 @@ public class CurrencyManagerService {
     private CurrencyRepository currencyRepository;
 
     private class ServiceStats {
-        public int cacheHits;
-        public int externalApiRequests;
-        public int totalRequests;
+        private int cacheHits;
+        private int externalApiRequests;
+        private int totalRequests;
 
 
         public ServiceStats() {

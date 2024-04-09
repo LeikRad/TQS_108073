@@ -82,4 +82,14 @@ class Currency_UnitTest {
         assertThat(foundCurrency.getId()).isEqualTo(currency1.getId());
         assertThat(foundCurrency.getEurRate()).isEqualTo(currency1.getEurRate());
     }
+
+    @Test
+    @DisplayName("Test get service stats")
+    void testGetServiceStats() {
+        String stats = "{ \"cacheHits\": 0, \"externalApiRequests\": 0, \"totalRequests\": 0 }";
+        
+        String serviceStats = currencyManagerService.getServiceStats();
+        
+        assertThat(serviceStats).isEqualTo(stats);
+    }
 }

@@ -71,13 +71,14 @@ export default function HomePage() {
                             <Select>
                                 <div className="flex items-center space-x-2">
                                     <p>Origin City</p>
-                                    <SelectTrigger className="w-[240px]">
+                                    <SelectTrigger className="w-[240px]" id="OriginCity">
                                         <SelectValue placeholder="" />
                                     </SelectTrigger>
                                 </div>
                                 <SelectContent className="max-h-[250px] overflow-auto">
                                     <SelectItem
                                         value="All"
+                                        id="originCityAll"
                                         onMouseDown={() => {
                                             setOriginCity('');
                                         }}
@@ -87,6 +88,7 @@ export default function HomePage() {
                                     {cityData?.map((city: any) => (
                                         <SelectItem
                                             value={city.cityId}
+                                            id={city.cityName}
                                             key={city.cityId}
                                             onMouseDown={() => {
                                                 setOriginCity(city.cityName);
@@ -102,13 +104,14 @@ export default function HomePage() {
                             <Select>
                                 <div className="flex items-center space-x-2">
                                     <p>Destination City</p>
-                                    <SelectTrigger className="w-[240px]">
+                                    <SelectTrigger className="w-[240px]" id="DestinationCity">
                                         <SelectValue placeholder="" />
                                     </SelectTrigger>
                                 </div>
                                 <SelectContent className="max-h-[250px] overflow-auto">
                                     <SelectItem
                                         value="All"
+                                        id="destinationCityAll"
                                         onMouseDown={() => setDestinationCity('')}
                                     >
                                         All
@@ -117,6 +120,7 @@ export default function HomePage() {
                                         <SelectItem
                                             value={city.cityId}
                                             key={city.cityId}
+                                            id={city.cityName}
                                             onMouseDown={() => setDestinationCity(city.cityName)}
                                         >
                                             {city.cityName}
@@ -130,13 +134,14 @@ export default function HomePage() {
                         <Select>
                             <div className="flex items-center space-x-2">
                                 <p>Origin City</p>
-                                <SelectTrigger className="w-auto">
+                                <SelectTrigger className="w-auto" id="Currency">
                                     <SelectValue placeholder="EUR" />
                                 </SelectTrigger>
                             </div>
                             <SelectContent className="max-h-[250px] overflow-auto">
                                 {currencyData?.map((currency: any) => (
                                     <SelectItem
+                                        id={currency.id}
                                         value={currency.id}
                                         key={currency.id}
                                         onMouseDown={() => {

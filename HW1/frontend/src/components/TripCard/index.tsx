@@ -39,7 +39,7 @@ export default function TripCard({ tripData, currency, eurRate }: TripsProps) {
                             Price: {(tripData.price * eurRate).toFixed(2)} {currency}
                         </p>
                         <Dialog>
-                            <DialogTrigger>
+                            <DialogTrigger id={'Book' + tripData.tripId.toString()}>
                                 <Button>Book</Button>
                             </DialogTrigger>
                             <DialogContent>

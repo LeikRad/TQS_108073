@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -34,7 +35,7 @@ class AcceptanceTest {
         vars = new HashMap<String, Object>();
 
         driver.get("http://localhost/");
-        driver.manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
+        driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(3));
 
         WebElement cityorigin = driver.findElement(By.id("OriginCity"));

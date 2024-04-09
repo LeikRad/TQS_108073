@@ -28,7 +28,6 @@ class AcceptanceTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless");
         ChromeDriver driver = new ChromeDriver(options);
         
         js = (JavascriptExecutor) driver;

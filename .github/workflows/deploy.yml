@@ -20,6 +20,11 @@ jobs:
       - name: Setup DockerCompose for Integration Tests
         run: docker compose up -d
         working-directory: ./HW1
+      - name: Start Xvfb
+        run: |
+          sudo apt-get install -y xvfb
+          Xvfb :99 &
+          echo "DISPLAY=:99.0" >> $GITHUB_ENV
       - name: Acceptance Test
         run: mvn -B clean test -fae
         working-directory: ./HW1/acceptance_test      

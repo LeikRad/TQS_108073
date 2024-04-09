@@ -11,8 +11,8 @@ const NavBar = () => {
                     <div className="flex space-x-4 items-center">
                         <BusFront size={32} />
                         <div className="flex flex-col">
-                            <p className="font-bold">Bus Company (Not Transdev)</p>
-                            <p className="text-sm italic">Our busses arrive on time</p>
+                            <p className="font-bold">AdventureArrow</p>
+                            <p className="text-sm italic">Pointing Towards Adventure, Across the Country</p>
                         </div>
                     </div>
                 </Link>

@@ -1,0 +1,8 @@
+CREATE TABLE books (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    genre VARCHAR(255) NOT NULL,
+    year INTEGER NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+)

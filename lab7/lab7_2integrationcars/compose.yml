@@ -1,0 +1,14 @@
+services:
+  db_mysql:
+    image: mysql:5.7
+    container_name: db_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tqsdemo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo
+    ports:
+      - "33060:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
